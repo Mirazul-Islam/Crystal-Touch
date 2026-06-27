@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cleaner
+Disallow: /login
+
+Sitemap: https://crystaltouch.example.com/sitemap.xml
