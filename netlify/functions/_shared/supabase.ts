@@ -5,7 +5,9 @@ import { HttpError, unauthorized, forbidden, serverError } from './http';
 export type Role = 'admin' | 'cleaner' | 'client';
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Supports both the new secret key (sb_secret_…) and the legacy service-role key.
+const SERVICE_ROLE_KEY =
+  process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 export const STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'job-photos';
 
 let cached: SupabaseClient | null = null;
@@ -17,7 +19,7 @@ let cached: SupabaseClient | null = null;
 export function serviceClient(): SupabaseClient {
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
     throw new HttpError(
-      serverError('Server is missing SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'),
+      serverError('Server is missing SUPABASE_URL / SUPABASE_SECRET_KEY'),
     );
   }
   if (!cached) {

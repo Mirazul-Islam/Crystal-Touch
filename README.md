@@ -33,10 +33,11 @@ It serves three kinds of users:
 2. Open the **SQL Editor** and run the contents of [`supabase/schema.sql`](supabase/schema.sql).
    This creates the tables, enums, row-level-security policies, and the `job-photos`
    storage bucket.
-3. From **Project Settings → API**, copy:
+3. From **Project Settings → API keys**, copy:
    - `Project URL`
-   - `anon` `public` key
-   - `service_role` secret key
+   - the **publishable** key (`sb_publishable_…`) — browser-safe
+   - the **secret** key (`sb_secret_…`) — server-only
+   - (Older projects show `anon` / `service_role` keys instead — those still work.)
 
 ## 3. Configure environment variables
 
@@ -49,11 +50,14 @@ Fill in the values:
 | Variable | Where it's used | Notes |
 | --- | --- | --- |
 | `VITE_SUPABASE_URL` | browser | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | browser | anon public key |
-| `VITE_SITE_URL` | browser | base URL for client booking links |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | browser | publishable key (`sb_publishable_…`); browser-safe |
+| `VITE_SITE_URL` | browser | base URL for client booking links (optional) |
 | `SUPABASE_URL` | functions | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | functions | **secret** — server only |
-| `SUPABASE_STORAGE_BUCKET` | functions | defaults to `job-photos` |
+| `SUPABASE_SECRET_KEY` | functions | **secret** key (`sb_secret_…`) — server only |
+| `SUPABASE_STORAGE_BUCKET` | functions | defaults to `job-photos` (optional) |
+
+> Legacy key names (`VITE_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) are also
+> accepted if your project still uses the old `anon` / `service_role` keys.
 
 > On Netlify, set the same variables under **Site settings → Environment variables**.
 
