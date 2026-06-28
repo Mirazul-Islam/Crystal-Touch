@@ -58,11 +58,14 @@ export function BeforeAfterReveal({
   const onPointerDown = (e: React.PointerEvent) => {
     draggingRef.current = true;
     setAnimating(false);
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    // Capture on the frame so moves keep flowing even if the finger leaves it.
+    frameRef.current?.setPointerCapture?.(e.pointerId);
     setFromClientX(e.clientX);
   };
   const onPointerMove = (e: React.PointerEvent) => {
     if (!draggingRef.current) return;
+    // Stop the browser from turning the horizontal drag into a page scroll.
+    if (e.cancelable) e.preventDefault();
     setFromClientX(e.clientX);
   };
   const onPointerUp = () => {
@@ -112,7 +115,7 @@ export function BeforeAfterReveal({
 
         <div
           ref={frameRef}
-          className="relative aspect-[11/6] w-full select-none overflow-hidden rounded-3xl border border-white/40 bg-slate-100 shadow-2xl ring-1 ring-black/5"
+          className="relative aspect-[11/6] w-full touch-pan-y select-none overflow-hidden rounded-3xl border border-white/40 bg-slate-100 shadow-2xl ring-1 ring-black/5"
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
