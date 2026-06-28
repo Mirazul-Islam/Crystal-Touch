@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import {
   ShieldCheck,
   Clock,
@@ -11,6 +11,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Seo } from '../../components/Seo';
+import { useAuth } from '../../context/AuthContext';
 import { BookingForm } from '../../features/booking/BookingForm';
 import { BeforeAfterReveal } from '../../features/showcase/BeforeAfterReveal';
 import { Card, CardBody } from '../../components/ui/Card';
@@ -106,6 +107,13 @@ const TESTIMONIALS = [
 ];
 
 export function Home() {
+  const { session, role } = useAuth();
+
+  // Signed-in staff don't need the marketing home — send them to their dashboard.
+  if (session && (role === 'admin' || role === 'cleaner')) {
+    return <Navigate to={role === 'admin' ? '/admin' : '/cleaner'} replace />;
+  }
+
   return (
     <>
       <Seo
