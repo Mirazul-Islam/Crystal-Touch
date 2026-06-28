@@ -32,8 +32,8 @@ function prefersReducedMotion() {
  * Swap in real photos by passing `beforeSrc` / `afterSrc` (e.g. /before.jpg).
  */
 export function BeforeAfterReveal({
-  beforeSrc = '/room-messy.svg',
-  afterSrc = '/room-clean.svg',
+  beforeSrc = '/hero-dirty.webp',
+  afterSrc = '/hero-clean.webp',
   className,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -112,7 +112,7 @@ export function BeforeAfterReveal({
 
         <div
           ref={frameRef}
-          className="relative aspect-[4/3] w-full select-none overflow-hidden rounded-3xl border border-white/40 bg-slate-100 shadow-2xl ring-1 ring-black/5"
+          className="relative aspect-[11/6] w-full select-none overflow-hidden rounded-3xl border border-white/40 bg-slate-100 shadow-2xl ring-1 ring-black/5"
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

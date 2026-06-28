@@ -154,7 +154,7 @@ export function Home() {
           </div>
 
           <div className="mt-6 flex items-center justify-center md:mt-0">
-            <BeforeAfterReveal className="w-full max-w-lg" />
+            <BeforeAfterReveal className="w-full max-w-xl" />
           </div>
         </div>
       </section>
