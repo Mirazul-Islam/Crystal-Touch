@@ -11,6 +11,18 @@ It serves three kinds of users:
 | **Admin** | Review incoming requests, send a quote, **dispatch** (assign) a cleaner, update status, manage cleaner accounts, and review reports. |
 | **Cleaner** | See jobs assigned to them, upload photos and comments while on the job, and submit a final report when the cleaning is done. |
 
+### Recurring visits
+
+When a booking's frequency is **weekly / bi-weekly / monthly**, completing a visit
+(submitting its report) automatically schedules the **next visit** — same client,
+address and cleaner, dated by the frequency. All visits in a recurring plan share a
+`series_id`, so the dispatch board, the cleaner's job list, and the client's tracking
+link show the full schedule and history. (One-time bookings are unaffected.)
+
+> Already ran `schema.sql` before this feature existed? Run
+> [`supabase/migrations/0002_recurring_visits.sql`](supabase/migrations/0002_recurring_visits.sql)
+> once in the Supabase SQL editor to add the recurring columns.
+
 ---
 
 ## Tech stack

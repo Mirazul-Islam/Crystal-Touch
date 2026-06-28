@@ -13,9 +13,23 @@ import {
   serverError,
 } from './_shared/http';
 
+const COPY_COLUMNS =
+  'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number';
+
+/** Compute the next visit date (YYYY-MM-DD) from today for a recurring booking. */
+function nextDate(frequency: string): string {
+  const d = new Date();
+  if (frequency === 'weekly') d.setDate(d.getDate() + 7);
+  else if (frequency === 'biweekly') d.setDate(d.getDate() + 14);
+  else if (frequency === 'monthly') d.setMonth(d.getMonth() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
 /**
  * Cleaner (assigned) or admin: submit the final after-service report.
- * Marks the booking completed. Upserts so an existing report is replaced.
+ * Marks the booking completed. For recurring bookings, the next visit is
+ * auto-created (same client/cleaner, dated by frequency) so the schedule
+ * keeps cycling. Upserts so an existing report is replaced.
  */
 export const handler: Handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return preflight();
@@ -34,7 +48,7 @@ export const handler: Handler = async (event) => {
 
     const { data: booking, error: bErr } = await supabase
       .from('bookings')
-      .select('id, assigned_cleaner_id')
+      .select(COPY_COLUMNS)
       .eq('id', parsed.data.booking_id)
       .maybeSingle();
     if (bErr) {
@@ -73,7 +87,55 @@ export const handler: Handler = async (event) => {
       .update({ status: 'completed' })
       .eq('id', parsed.data.booking_id);
 
-    return created({ id: data.id });
+    // --- recurring: schedule the next visit -------------------------------
+    let nextVisit: { id: string; preferred_date: string } | null = null;
+    if (booking.frequency && booking.frequency !== 'one_time') {
+      // Idempotent: don't spawn a duplicate if a next visit already exists.
+      const { data: existing } = await supabase
+        .from('bookings')
+        .select('id')
+        .eq('recurrence_parent_id', booking.id)
+        .maybeSingle();
+
+      if (!existing) {
+        const due = nextDate(booking.frequency);
+        const { data: nextBooking, error: nextErr } = await supabase
+          .from('bookings')
+          .insert({
+            client_name: booking.client_name,
+            client_email: booking.client_email,
+            client_phone: booking.client_phone,
+            service_type: booking.service_type,
+            frequency: booking.frequency,
+            bedrooms: booking.bedrooms,
+            bathrooms: booking.bathrooms,
+            extras: booking.extras,
+            address: booking.address,
+            city: booking.city,
+            postal_code: booking.postal_code,
+            preferred_date: due,
+            preferred_time: booking.preferred_time,
+            notes: booking.notes,
+            estimated_price: booking.estimated_price,
+            assigned_cleaner_id: booking.assigned_cleaner_id,
+            status: booking.assigned_cleaner_id ? 'assigned' : 'new',
+            series_id: booking.series_id,
+            visit_number: (booking.visit_number ?? 1) + 1,
+            recurrence_parent_id: booking.id,
+          })
+          .select('id, preferred_date')
+          .single();
+
+        if (nextErr) {
+          // Non-fatal: the report saved fine; just log the scheduling failure.
+          console.error('reports-create next-visit error', nextErr);
+        } else if (nextBooking) {
+          nextVisit = { id: nextBooking.id, preferred_date: nextBooking.preferred_date };
+        }
+      }
+    }
+
+    return created({ id: data.id, next_visit: nextVisit });
   } catch (err) {
     if (err instanceof HttpError) return err.response;
     console.error('reports-create error', err);

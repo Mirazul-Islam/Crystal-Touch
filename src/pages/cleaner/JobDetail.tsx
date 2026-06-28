@@ -16,6 +16,7 @@ import {
   createJobUpdate,
   createReport,
 } from '../../lib/api';
+import { formatDate } from '../../lib/format';
 import type { ChecklistItem } from '../../lib/types';
 
 const DEFAULT_CHECKLIST: ChecklistItem[] = [
@@ -41,7 +42,7 @@ export function JobDetail() {
   const [newItem, setNewItem] = useState('');
   const [beforePhotos, setBeforePhotos] = useState<string[]>([]);
   const [afterPhotos, setAfterPhotos] = useState<string[]>([]);
-  const [reportFlash, setReportFlash] = useState(false);
+  const [reportMsg, setReportMsg] = useState<string | null>(null);
 
   const jobQuery = useQuery({
     queryKey: ['booking', id],
@@ -88,9 +89,15 @@ export function JobDetail() {
         before_photos: beforePhotos,
         after_photos: afterPhotos,
       }),
-    onSuccess: () => {
-      setReportFlash(true);
-      setTimeout(() => setReportFlash(false), 2500);
+    onSuccess: (data) => {
+      setReportMsg(
+        data.next_visit
+          ? `Report saved & job completed. Next visit auto-scheduled for ${formatDate(
+              data.next_visit.preferred_date,
+            )}.`
+          : 'Report saved — the client can now see it.',
+      );
+      setTimeout(() => setReportMsg(null), 6000);
       queryClient.invalidateQueries({ queryKey: ['booking', id] });
       queryClient.invalidateQueries({ queryKey: ['my-jobs'] });
     },
@@ -270,9 +277,9 @@ export function JobDetail() {
                 {reportMutation.isError && (
                   <ErrorState message={(reportMutation.error as Error).message} />
                 )}
-                {reportFlash && (
+                {reportMsg && (
                   <p className="text-sm font-medium text-emerald-600">
-                    Report saved — the client can now see it. ✓
+                    {reportMsg} ✓
                   </p>
                 )}
 

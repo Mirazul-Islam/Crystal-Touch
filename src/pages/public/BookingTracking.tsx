@@ -1,14 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { FileText } from 'lucide-react';
+import { FileText, Repeat } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { Card, CardBody } from '../../components/ui/Card';
-import { StatusBadge } from '../../components/ui/Badge';
+import { StatusBadge, RecurringBadge } from '../../components/ui/Badge';
 import { LoadingState, ErrorState, EmptyState } from '../../components/ui/Spinner';
 import { BookingStatusTimeline } from '../../components/booking/BookingStatusTimeline';
 import { BookingSummary } from '../../components/booking/BookingSummary';
 import { JobUpdatesFeed } from '../../components/booking/JobUpdatesFeed';
 import { ReportView } from '../../components/booking/ReportView';
+import { SeriesTimeline } from '../../components/booking/SeriesTimeline';
 import { getBookingByToken } from '../../lib/api';
 import { formatDate } from '../../lib/format';
 
@@ -48,7 +49,10 @@ export function BookingTracking() {
                     Requested on {formatDate(data.booking.created_at)}
                   </p>
                 </div>
-                <StatusBadge status={data.booking.status} />
+                <div className="flex items-center gap-2">
+                  <RecurringBadge frequency={data.booking.frequency} />
+                  <StatusBadge status={data.booking.status} />
+                </div>
               </div>
 
               <Card>
@@ -56,6 +60,26 @@ export function BookingTracking() {
                   <BookingStatusTimeline status={data.booking.status} />
                 </CardBody>
               </Card>
+
+              {data.series.length > 1 && (
+                <Card>
+                  <CardBody>
+                    <div className="mb-4 flex items-center gap-2">
+                      <Repeat className="h-5 w-5 text-accent-600" />
+                      <h2 className="text-lg font-semibold">Your cleaning schedule</h2>
+                    </div>
+                    <p className="mb-4 text-sm text-slate-500">
+                      You’re on a {data.booking.frequency.replace('_', '-')} plan. Here’s
+                      every visit — past and upcoming.
+                    </p>
+                    <SeriesTimeline
+                      series={data.series}
+                      currentId={data.booking.id}
+                      hrefFor={(v) => `/booking/${v.public_token}`}
+                    />
+                  </CardBody>
+                </Card>
+              )}
 
               <Card>
                 <CardBody>

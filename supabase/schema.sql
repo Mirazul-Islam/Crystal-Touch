@@ -99,6 +99,12 @@ create table if not exists public.bookings (
   assigned_cleaner_id uuid references public.profiles (id) on delete set null,
   estimated_price     numeric(10, 2),
 
+  -- recurring series: a weekly/monthly client is a chain of bookings (visits)
+  -- that all share a series_id. The first booking is the root (series_id = id).
+  series_id           uuid,
+  visit_number        int not null default 1,
+  recurrence_parent_id uuid references public.bookings (id) on delete set null,
+
   created_at          timestamptz not null default now(),
   updated_at          timestamptz not null default now()
 );
@@ -106,6 +112,24 @@ create table if not exists public.bookings (
 create index if not exists bookings_status_idx          on public.bookings (status);
 create index if not exists bookings_cleaner_idx          on public.bookings (assigned_cleaner_id);
 create index if not exists bookings_created_at_idx       on public.bookings (created_at desc);
+create index if not exists bookings_series_idx           on public.bookings (series_id);
+
+-- A brand-new booking starts its own series (series_id = its own id). Auto-created
+-- repeat visits inherit the parent's series_id (set explicitly on insert).
+create or replace function public.set_series_id()
+returns trigger language plpgsql as $$
+begin
+  if new.series_id is null then
+    new.series_id = new.id;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists bookings_set_series_id on public.bookings;
+create trigger bookings_set_series_id
+  before insert on public.bookings
+  for each row execute function public.set_series_id();
 
 -- keep updated_at fresh
 create or replace function public.touch_updated_at()
