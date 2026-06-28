@@ -51,7 +51,12 @@ export async function getUser(event: HandlerEvent): Promise<AuthedUser> {
 
   const supabase = serviceClient();
   const { data, error } = await supabase.auth.getUser(token);
-  if (error || !data.user) throw new HttpError(unauthorized('Invalid session'));
+  if (error || !data.user) {
+    console.error('[auth] getUser failed:', error?.message);
+    throw new HttpError(
+      unauthorized(`Invalid session${error?.message ? ` — ${error.message}` : ''}`),
+    );
+  }
 
   const { data: profile } = await supabase
     .from('profiles')
