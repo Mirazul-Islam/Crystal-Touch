@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { ArrowRight } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { Card } from '../../components/ui/Card';
-import { StatusBadge } from '../../components/ui/Badge';
+import { StatusBadge, RecurringBadge } from '../../components/ui/Badge';
 import { LoadingState, ErrorState, EmptyState } from '../../components/ui/Spinner';
 import { listBookings } from '../../lib/api';
 import { SERVICE_LABELS, STATUS_LABELS } from '../../lib/constants';
@@ -102,7 +102,13 @@ export function AdminDashboard() {
                       <p className="text-xs text-slate-500">{b.client_email}</p>
                     </td>
                     <td className="px-5 py-3 text-slate-600">
-                      {SERVICE_LABELS[b.service_type]}
+                      <div className="flex flex-col items-start gap-1">
+                        {SERVICE_LABELS[b.service_type]}
+                        <RecurringBadge
+                          frequency={b.frequency}
+                          visitNumber={b.visit_number}
+                        />
+                      </div>
                     </td>
                     <td className="px-5 py-3 text-slate-600">{b.city}</td>
                     <td className="px-5 py-3 text-slate-600">{formatDate(b.created_at)}</td>
@@ -143,8 +149,11 @@ export function AdminDashboard() {
                   <p className="font-semibold text-slate-800">{b.client_name}</p>
                   <StatusBadge status={b.status} />
                 </div>
-                <p className="mt-1 text-sm text-slate-600">
-                  {SERVICE_LABELS[b.service_type]} · {b.city}
+                <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
+                  <span>
+                    {SERVICE_LABELS[b.service_type]} · {b.city}
+                  </span>
+                  <RecurringBadge frequency={b.frequency} visitNumber={b.visit_number} />
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
                   {formatDate(b.created_at)} ·{' '}

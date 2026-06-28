@@ -21,7 +21,7 @@ export const handler: Handler = async (event) => {
     let query = supabase
       .from('bookings')
       .select(
-        'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, address, city, postal_code, preferred_date, preferred_time, status, assigned_cleaner_id, estimated_price, created_at',
+        'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, address, city, postal_code, preferred_date, preferred_time, status, assigned_cleaner_id, estimated_price, series_id, visit_number, recurrence_parent_id, created_at',
       )
       .order('created_at', { ascending: false });
 

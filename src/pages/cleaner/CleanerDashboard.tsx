@@ -3,12 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import { MapPin, CalendarClock, ArrowRight } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { Card, CardBody } from '../../components/ui/Card';
-import { StatusBadge } from '../../components/ui/Badge';
+import { StatusBadge, RecurringBadge } from '../../components/ui/Badge';
 import { LoadingState, ErrorState, EmptyState } from '../../components/ui/Spinner';
 import { listMyJobs } from '../../lib/api';
 import { SERVICE_LABELS, TIME_SLOT_LABELS } from '../../lib/constants';
 import { formatDate } from '../../lib/format';
 import { useAuth } from '../../context/AuthContext';
+import type { Booking } from '../../lib/types';
 
 export function CleanerDashboard() {
   const { profile } = useAuth();
@@ -71,32 +72,22 @@ export function CleanerDashboard() {
   );
 }
 
-function JobCard({
-  job,
-}: {
-  job: {
-    id: string;
-    client_name: string;
-    service_type: keyof typeof SERVICE_LABELS;
-    city: string;
-    address: string;
-    preferred_date: string | null;
-    preferred_time: keyof typeof TIME_SLOT_LABELS | null;
-    status: 'assigned' | 'in_progress' | 'completed' | 'new' | 'cancelled';
-  };
-}) {
+function JobCard({ job }: { job: Booking }) {
   return (
     <Link to={`/cleaner/jobs/${job.id}`}>
       <Card className="h-full transition hover:shadow-md">
         <CardBody>
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-2">
             <div>
               <p className="font-semibold text-slate-900">
                 {SERVICE_LABELS[job.service_type]} clean
               </p>
               <p className="text-sm text-slate-500">{job.client_name}</p>
             </div>
-            <StatusBadge status={job.status} />
+            <div className="flex flex-col items-end gap-1">
+              <StatusBadge status={job.status} />
+              <RecurringBadge frequency={job.frequency} visitNumber={job.visit_number} />
+            </div>
           </div>
           <div className="mt-4 space-y-1.5 text-sm text-slate-600">
             <p className="flex items-center gap-2">

@@ -48,8 +48,20 @@ export interface Booking {
   assigned_cleaner_id: string | null;
   assigned_cleaner_name?: string | null;
   estimated_price: number | null;
+  series_id?: string | null;
+  visit_number?: number;
+  recurrence_parent_id?: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface SeriesVisit {
+  id: string;
+  public_token: string;
+  status: BookingStatus;
+  preferred_date: string | null;
+  visit_number: number;
+  has_report: boolean;
 }
 
 export interface JobUpdate {
@@ -77,6 +89,7 @@ export interface BookingDetail {
   booking: Booking;
   job_updates: JobUpdate[];
   report: Report | null;
+  series: SeriesVisit[];
   view: 'client' | 'staff';
 }
 

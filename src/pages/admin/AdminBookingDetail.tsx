@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, FileText, Save } from 'lucide-react';
+import { ArrowLeft, FileText, Save, Repeat } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { Card, CardBody } from '../../components/ui/Card';
-import { StatusBadge } from '../../components/ui/Badge';
+import { StatusBadge, RecurringBadge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Field, Input, Select } from '../../components/ui/Field';
 import { LoadingState, ErrorState, EmptyState } from '../../components/ui/Spinner';
@@ -12,6 +12,7 @@ import { BookingStatusTimeline } from '../../components/booking/BookingStatusTim
 import { BookingSummary } from '../../components/booking/BookingSummary';
 import { JobUpdatesFeed } from '../../components/booking/JobUpdatesFeed';
 import { ReportView } from '../../components/booking/ReportView';
+import { SeriesTimeline } from '../../components/booking/SeriesTimeline';
 import { getBookingById, listCleaners, updateBooking } from '../../lib/api';
 import { STATUS_LABELS } from '../../lib/constants';
 import type { BookingStatus } from '../../lib/types';
@@ -70,6 +71,7 @@ export function AdminBookingDetail() {
   const cleaners = cleanersQuery.data?.users ?? [];
   const report = bookingQuery.data?.report ?? null;
   const updates = bookingQuery.data?.job_updates ?? [];
+  const series = bookingQuery.data?.series ?? [];
 
   return (
     <>
@@ -87,7 +89,13 @@ export function AdminBookingDetail() {
           <h1 className="text-2xl font-bold">{booking.client_name}</h1>
           <p className="text-sm text-slate-500">Booking #{booking.id.slice(0, 8)}</p>
         </div>
-        <StatusBadge status={booking.status} />
+        <div className="flex items-center gap-2">
+          <RecurringBadge
+            frequency={booking.frequency}
+            visitNumber={booking.visit_number}
+          />
+          <StatusBadge status={booking.status} />
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -129,6 +137,22 @@ export function AdminBookingDetail() {
               )}
             </CardBody>
           </Card>
+
+          {series.length > 1 && (
+            <Card>
+              <CardBody>
+                <div className="mb-4 flex items-center gap-2">
+                  <Repeat className="h-5 w-5 text-accent-600" />
+                  <h2 className="text-lg font-semibold">Recurring schedule</h2>
+                </div>
+                <SeriesTimeline
+                  series={series}
+                  currentId={booking.id}
+                  hrefFor={(v) => `/admin/bookings/${v.id}`}
+                />
+              </CardBody>
+            </Card>
+          )}
         </div>
 
         {/* Right: dispatch controls */}

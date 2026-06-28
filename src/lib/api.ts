@@ -134,7 +134,10 @@ export function createReport(input: {
   before_photos: string[];
   after_photos: string[];
 }) {
-  return request<{ id: string }>('reports-create', {
+  return request<{
+    id: string;
+    next_visit: { id: string; preferred_date: string } | null;
+  }>('reports-create', {
     method: 'POST',
     auth: true,
     body: input,
