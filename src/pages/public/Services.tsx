@@ -34,7 +34,7 @@ export function Services() {
 
       <section className="bg-gradient-to-br from-brand-700 to-brand-500 py-16 text-white">
         <div className="container-page max-w-3xl">
-          <h1 className="text-4xl font-extrabold">Our cleaning services</h1>
+          <h1 className="text-4xl font-extrabold text-white">Our cleaning services</h1>
           <p className="mt-4 text-lg text-brand-50">
             Whatever the space, we have a trained, insured team ready — and every job ends
             with a detailed, photo-backed report.

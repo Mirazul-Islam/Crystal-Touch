@@ -121,7 +121,7 @@ export function Home() {
             <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium">
               <Star className="h-4 w-4 fill-current" /> Rated 4.9/5 by 320+ clients
             </span>
-            <h1 className="mt-5 text-4xl font-extrabold leading-tight md:text-5xl">
+            <h1 className="mt-5 text-4xl font-extrabold leading-tight text-white md:text-5xl">
               Spotless homes & spaces, with a report you can trust
             </h1>
             <p className="mt-5 max-w-lg text-lg text-brand-50">

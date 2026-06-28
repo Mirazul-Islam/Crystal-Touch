@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
 import clsx from 'clsx';
 
 export function Logo({
@@ -12,17 +11,31 @@ export function Logo({
   light?: boolean;
 }) {
   return (
-    <Link to={to} className={clsx('inline-flex items-center gap-2', className)}>
-      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white">
-        <Sparkles className="h-5 w-5" />
-      </span>
-      <span
-        className={clsx(
-          'text-lg font-extrabold tracking-tight',
-          light ? 'text-white' : 'text-slate-900',
-        )}
-      >
-        Crystal<span className="text-brand-500">Touch</span>
+    <Link to={to} className={clsx('inline-flex items-center gap-2.5', className)}>
+      <img
+        src="/crystal-tile.svg"
+        alt="Crystal Touch"
+        width={36}
+        height={36}
+        className="h-9 w-9 rounded-lg shadow-sm"
+      />
+      <span className="flex flex-col leading-none">
+        <span
+          className={clsx(
+            'text-lg font-extrabold tracking-tight',
+            light ? 'text-white' : 'text-brand-900',
+          )}
+        >
+          Crystal Touch
+        </span>
+        <span
+          className={clsx(
+            'mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em]',
+            light ? 'text-accent-300' : 'text-accent-500',
+          )}
+        >
+          Cleaning Services
+        </span>
       </span>
     </Link>
   );

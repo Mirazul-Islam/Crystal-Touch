@@ -92,7 +92,7 @@ function PublicNav() {
 
 function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-900 text-slate-300">
+    <footer className="border-t border-brand-800 bg-brand-950 text-slate-300">
       <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <Logo light />
