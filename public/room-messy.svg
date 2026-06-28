@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="A cluttered, messy living room before cleaning">
+  <defs>
+    <linearGradient id="mWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9ecee"/>
+      <stop offset="1" stop-color="#dde2e6"/>
+    </linearGradient>
+    <linearGradient id="mFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ded0b6"/>
+      <stop offset="1" stop-color="#cfbf9f"/>
+    </linearGradient>
+    <linearGradient id="mSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c2ccd2"/>
+      <stop offset="1" stop-color="#dde3e7"/>
+    </linearGradient>
+    <clipPath id="mWin"><rect x="92" y="70" width="200" height="150" rx="10"/></clipPath>
+  </defs>
+
+  <!-- room (dull) -->
+  <rect x="0" y="0" width="800" height="430" fill="url(#mWall)"/>
+  <rect x="0" y="430" width="800" height="170" fill="url(#mFloor)"/>
+  <g stroke="#bcab8b" stroke-width="2" opacity="0.7">
+    <line x1="0" y1="470" x2="800" y2="470"/>
+    <line x1="0" y1="520" x2="800" y2="520"/>
+    <line x1="0" y1="575" x2="800" y2="575"/>
+  </g>
+
+  <!-- cobweb in corner -->
+  <g stroke="#b9bfc4" stroke-width="1.4" fill="none" opacity="0.9">
+    <path d="M800 40 L740 40 M800 40 L772 70 M800 40 L800 96 M800 40 L756 96"/>
+    <path d="M790 48 q-14 6 -22 22 M778 56 q-10 12 -14 30 M800 64 q-20 4 -34 20"/>
+  </g>
+
+  <!-- dirty window -->
+  <rect x="84" y="62" width="216" height="166" rx="14" fill="#eceef0"/>
+  <g clip-path="url(#mWin)">
+    <rect x="92" y="70" width="200" height="150" fill="url(#mSky)"/>
+    <circle cx="250" cy="108" r="22" fill="#cfd6da"/>
+    <path d="M92 196 q40 -26 80 -6 q30 14 60 0 l0 30 l-140 0 z" fill="#aab6ad"/>
+    <!-- grime streaks -->
+    <path d="M120 70 q-8 60 4 150 M170 70 q6 70 -4 150 M230 70 q-6 50 2 150" stroke="#aeb7bc" stroke-width="5" fill="none" opacity="0.5"/>
+  </g>
+  <rect x="186" y="70" width="6" height="150" fill="#eceef0"/>
+  <rect x="92" y="138" width="200" height="6" fill="#eceef0"/>
+
+  <!-- crooked framed art -->
+  <g transform="rotate(-8 564 117)">
+    <rect x="520" y="80" width="96" height="74" rx="4" fill="#f1f1f1" stroke="#5f6b78" stroke-width="4"/>
+    <rect x="528" y="88" width="80" height="58" fill="#d2d9de"/>
+    <path d="M528 146 l24 -28 l18 16 l20 -26 l18 38 z" fill="#9aa6ac"/>
+  </g>
+  <g transform="rotate(6 682 138)">
+    <rect x="646" y="92" width="72" height="92" rx="4" fill="#f1f1f1" stroke="#5f6b78" stroke-width="4"/>
+    <rect x="654" y="100" width="56" height="76" fill="#dde2e6"/>
+    <circle cx="682" cy="138" r="20" fill="#aeb7bc"/>
+  </g>
+
+  <!-- stained rug -->
+  <ellipse cx="330" cy="520" rx="250" ry="52" fill="#cdbfa3"/>
+  <ellipse cx="330" cy="520" rx="250" ry="52" fill="none" stroke="#b3a585" stroke-width="4"/>
+  <ellipse cx="300" cy="516" rx="46" ry="18" fill="#9c7b52" opacity="0.55"/>
+  <ellipse cx="392" cy="534" rx="22" ry="10" fill="#8c6b46" opacity="0.5"/>
+
+  <!-- sofa (dull) with askew cushion -->
+  <g>
+    <rect x="466" y="296" width="280" height="120" rx="20" fill="#7f97a6"/>
+    <rect x="452" y="250" width="40" height="166" rx="18" fill="#6b8190"/>
+    <rect x="724" y="250" width="40" height="166" rx="18" fill="#6b8190"/>
+    <rect x="486" y="262" width="232" height="70" rx="16" fill="#6b8190"/>
+    <rect x="500" y="300" width="100" height="64" rx="14" fill="#94a8b5"/>
+    <g transform="rotate(18 662 334)">
+      <rect x="612" y="302" width="100" height="64" rx="14" fill="#8a9eac"/>
+    </g>
+  </g>
+  <!-- tossed blanket on sofa -->
+  <path d="M690 300 q30 10 40 40 q-26 8 -52 -4 q6 -20 12 -36 z" fill="#a7b8c4"/>
+
+  <!-- coffee table with tipped mug + clutter -->
+  <g>
+    <rect x="150" y="452" width="190" height="26" rx="8" fill="#9c7748"/>
+    <rect x="150" y="452" width="190" height="10" rx="5" fill="#ad8a5c"/>
+    <rect x="162" y="478" width="12" height="40" rx="4" fill="#79552f"/>
+    <rect x="316" y="478" width="12" height="40" rx="4" fill="#79552f"/>
+    <!-- tipped mug + spill -->
+    <ellipse cx="232" cy="450" rx="20" ry="6" fill="#7a5a36" opacity="0.5"/>
+    <rect x="206" y="436" width="26" height="16" rx="4" transform="rotate(-24 219 444)" fill="#c4ccd1"/>
+    <!-- stack of papers -->
+    <rect x="280" y="442" width="40" height="10" rx="2" transform="rotate(-6 300 447)" fill="#eef0f1"/>
+    <rect x="284" y="438" width="40" height="10" rx="2" transform="rotate(7 304 443)" fill="#e2e5e7"/>
+  </g>
+
+  <!-- scattered papers / clutter on floor -->
+  <g>
+    <rect x="430" y="496" width="46" height="34" rx="3" transform="rotate(-18 453 513)" fill="#eef0f1" stroke="#d3d8db"/>
+    <rect x="486" y="540" width="44" height="32" rx="3" transform="rotate(12 508 556)" fill="#e6e9eb" stroke="#d3d8db"/>
+    <rect x="120" y="556" width="50" height="30" rx="3" transform="rotate(-10 145 571)" fill="#eef0f1" stroke="#d3d8db"/>
+    <!-- crumpled ball -->
+    <circle cx="600" cy="560" r="16" fill="#e3e6e8"/>
+    <path d="M590 556 l8 6 l8 -8 m-12 12 l10 -4" stroke="#c4c9cc" stroke-width="2" fill="none"/>
+    <!-- stray sock -->
+    <path d="M250 560 q24 -4 28 10 q2 12 -14 14 q-22 2 -22 -10 q0 -10 8 -14 z" fill="#cdd3d7"/>
+  </g>
+
+  <!-- dust bunnies -->
+  <g fill="#c3c9cd" opacity="0.85">
+    <circle cx="700" cy="470" r="9"/><circle cx="710" cy="474" r="6"/><circle cx="692" cy="476" r="5"/>
+    <circle cx="60" cy="500" r="8"/><circle cx="70" cy="504" r="5"/>
+  </g>
+
+  <!-- dull overlay -->
+  <rect x="0" y="0" width="800" height="600" fill="#6b6f73" opacity="0.07"/>
+</svg>

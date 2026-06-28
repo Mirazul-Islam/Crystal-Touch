@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { BookingForm } from '../../features/booking/BookingForm';
+import { BeforeAfterReveal } from '../../features/showcase/BeforeAfterReveal';
 import { Card, CardBody } from '../../components/ui/Card';
 import { SERVICE_OPTIONS } from '../../lib/constants';
 
@@ -152,21 +153,8 @@ export function Home() {
             </div>
           </div>
 
-          <div className="hidden items-center justify-center md:flex">
-            <div className="grid w-full max-w-sm gap-4">
-              {WHY_US.slice(0, 4).map((w) => (
-                <div
-                  key={w.title}
-                  className="flex items-start gap-3 rounded-xl bg-white/10 p-4 backdrop-blur"
-                >
-                  <w.icon className="mt-0.5 h-6 w-6 shrink-0 text-white" />
-                  <div>
-                    <p className="font-semibold">{w.title}</p>
-                    <p className="text-sm text-brand-50">{w.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="mt-6 flex items-center justify-center md:mt-0">
+            <BeforeAfterReveal className="w-full max-w-lg" />
           </div>
         </div>
       </section>

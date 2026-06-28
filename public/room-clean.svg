@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="A bright, spotless living room">
+  <defs>
+    <linearGradient id="cWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4faff"/>
+      <stop offset="1" stop-color="#e3f0fb"/>
+    </linearGradient>
+    <linearGradient id="cFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0e2cb"/>
+      <stop offset="1" stop-color="#e6d3b4"/>
+    </linearGradient>
+    <linearGradient id="cSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe6ff"/>
+      <stop offset="1" stop-color="#eaf7ff"/>
+    </linearGradient>
+    <clipPath id="cWin"><rect x="92" y="70" width="200" height="150" rx="10"/></clipPath>
+  </defs>
+
+  <!-- room -->
+  <rect x="0" y="0" width="800" height="430" fill="url(#cWall)"/>
+  <rect x="0" y="430" width="800" height="170" fill="url(#cFloor)"/>
+  <g stroke="#dcc8a6" stroke-width="2" opacity="0.7">
+    <line x1="0" y1="470" x2="800" y2="470"/>
+    <line x1="0" y1="520" x2="800" y2="520"/>
+    <line x1="0" y1="575" x2="800" y2="575"/>
+  </g>
+  <!-- floor shine -->
+  <polygon points="120,430 220,430 120,600 -40,600" fill="#ffffff" opacity="0.18"/>
+
+  <!-- window with sunny view -->
+  <rect x="84" y="62" width="216" height="166" rx="14" fill="#ffffff"/>
+  <g clip-path="url(#cWin)">
+    <rect x="92" y="70" width="200" height="150" fill="url(#cSky)"/>
+    <circle cx="250" cy="108" r="26" fill="#ffe27a"/>
+    <circle cx="250" cy="108" r="40" fill="#ffe27a" opacity="0.3"/>
+    <path d="M92 190 q40 -30 80 -8 q30 16 60 2 l0 36 l-140 0 z" fill="#bfe9c8"/>
+  </g>
+  <rect x="186" y="70" width="6" height="150" fill="#ffffff"/>
+  <rect x="92" y="138" width="200" height="6" fill="#ffffff"/>
+
+  <!-- framed art (straight) -->
+  <g>
+    <rect x="520" y="80" width="96" height="74" rx="4" fill="#ffffff" stroke="#0b2e59" stroke-width="4"/>
+    <rect x="528" y="88" width="80" height="58" fill="#d6eafb"/>
+    <path d="M528 146 l24 -28 l18 16 l20 -26 l18 38 z" fill="#15b5c4"/>
+    <circle cx="544" cy="104" r="7" fill="#ffd166"/>
+  </g>
+  <g>
+    <rect x="646" y="92" width="72" height="92" rx="4" fill="#ffffff" stroke="#0b2e59" stroke-width="4"/>
+    <rect x="654" y="100" width="56" height="76" fill="#eef6fd"/>
+    <circle cx="682" cy="138" r="20" fill="#7ce9e6"/>
+  </g>
+
+  <!-- rug -->
+  <ellipse cx="330" cy="520" rx="250" ry="52" fill="#d6eafb"/>
+  <ellipse cx="330" cy="520" rx="250" ry="52" fill="none" stroke="#7cbef0" stroke-width="4"/>
+  <ellipse cx="330" cy="520" rx="170" ry="32" fill="none" stroke="#aed3f3" stroke-width="3"/>
+
+  <!-- sofa -->
+  <g>
+    <rect x="466" y="296" width="280" height="120" rx="20" fill="#2e9be0"/>
+    <rect x="452" y="250" width="40" height="166" rx="18" fill="#1c6fd6"/>
+    <rect x="724" y="250" width="40" height="166" rx="18" fill="#1c6fd6"/>
+    <rect x="486" y="262" width="232" height="70" rx="16" fill="#1c6fd6"/>
+    <rect x="500" y="300" width="100" height="64" rx="14" fill="#7ce9e6"/>
+    <rect x="612" y="300" width="100" height="64" rx="14" fill="#5fe0df"/>
+  </g>
+
+  <!-- coffee table -->
+  <g>
+    <rect x="150" y="452" width="190" height="26" rx="8" fill="#b58452"/>
+    <rect x="150" y="452" width="190" height="10" rx="5" fill="#c79a68"/>
+    <rect x="162" y="478" width="12" height="40" rx="4" fill="#8a6238"/>
+    <rect x="316" y="478" width="12" height="40" rx="4" fill="#8a6238"/>
+    <!-- neat vase -->
+    <rect x="250" y="424" width="22" height="30" rx="6" fill="#15b5c4"/>
+    <path d="M252 424 q-8 -22 6 -34 M262 424 q2 -26 16 -30 M261 424 q10 -18 26 -16" fill="none" stroke="#119aa8" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- plant -->
+  <g>
+    <path d="M724 430 q-18 -60 6 -104 M736 430 q4 -70 34 -92 M732 430 q22 -48 56 -52" fill="none" stroke="#15b5c4" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="724" cy="330" rx="18" ry="10" fill="#119aa8"/>
+    <ellipse cx="770" cy="338" rx="20" ry="11" fill="#15b5c4"/>
+    <path d="M712 430 l40 0 l-6 44 l-28 0 z" fill="#155fb0"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#ffffff">
+    <path d="M360 120 q3 11 14 14 q-11 3 -14 14 q-3 -11 -14 -14 q11 -3 14 -14 Z"/>
+    <path d="M430 250 q2 8 10 10 q-8 2 -10 10 q-2 -8 -10 -10 q8 -2 10 -10 Z"/>
+    <path d="M120 300 q2.4 9 11 11 q-8.6 2 -11 11 q-2.4 -9 -11 -11 q8.6 -2 11 -11 Z" fill="#7ce9e6"/>
+    <path d="M650 360 q2 8 10 10 q-8 2 -10 10 q-2 -8 -10 -10 q8 -2 10 -10 Z" fill="#5fe0df"/>
+  </g>
+</svg>

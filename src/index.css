@@ -6,6 +6,36 @@
   html {
     scroll-behavior: smooth;
   }
+
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translateX(-120%);
+    }
+    100% {
+      transform: translateX(120%);
+    }
+  }
+
+  /* Honor reduced-motion: stop the hero from floating / sweeping. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
   body {
     @apply bg-white text-slate-800 antialiased;
     font-family: theme('fontFamily.sans');
