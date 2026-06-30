@@ -26,30 +26,6 @@
     }
   }
 
-  /* Print: clean, official invoice output. */
-  @page {
-    margin: 16mm;
-  }
-  @media print {
-    body {
-      background: #fff;
-    }
-    main {
-      padding: 0 !important;
-    }
-    /* Force logo colours, the table header band and borders to actually print. */
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    .invoice-sheet {
-      max-width: 100% !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      box-shadow: none !important;
-    }
-  }
-
   /* Honor reduced-motion: stop the hero from floating / sweeping. */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -86,5 +62,45 @@
   }
   .label-base {
     @apply mb-1.5 block text-sm font-medium text-slate-700;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Print — official, never-clipped invoice. Kept at top level (not in @layer)
+   so @page and the overrides are always honoured.
+--------------------------------------------------------------------------- */
+@page {
+  size: auto;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  /* Force the logo, the table header band and borders to actually print. */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* The sheet keeps its own side padding (box-sizing: border-box) so the table
+     never touches the page edge — even if the browser's Margins are set to
+     None. width:100% fills whatever printable area is left. */
+  .invoice-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 10mm !important;
+    box-shadow: none !important;
+  }
+  /* Avoid an empty trailing page from tall flex/min-h ancestors. */
+  .invoice-sheet table {
+    page-break-inside: auto;
   }
 }
