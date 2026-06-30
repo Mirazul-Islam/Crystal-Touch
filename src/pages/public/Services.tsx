@@ -10,17 +10,9 @@ const DETAILS: Record<string, string> = {
   apartment:
     'Efficient, thorough cleaning tailored to apartments and condos, including shared-building considerations and compact spaces.',
   airbnb:
-    'Fast, reliable turnover cleaning between guests with linen changes, restocking checks and a photo report so your listing stays five-star.',
-  hotel:
-    'Scalable housekeeping for guest rooms, suites and common areas, delivered to consistent, inspection-ready standards.',
-  office:
-    'Commercial cleaning for offices and workspaces — desks, kitchens, restrooms and high-traffic areas kept hygienic and presentable.',
-  move_in_out:
-    'Detailed top-to-bottom cleaning for empty properties so tenants move in (or out) to an immaculate space and deposits stay protected.',
-  post_construction:
-    'Dust, debris and residue removal after renovations or builds, making new and remodelled spaces truly move-in ready.',
-  deep_clean:
-    'An intensive, one-off reset that reaches the spots routine cleans miss — appliances, grout, baseboards, vents and more.',
+    'Reliable turnover cleaning between guests with linen changes, restocking checks and a photo report so your listing stays five-star.',
+  airbnb_express:
+    'A fast, priority same-day turnaround for back-to-back bookings — we get your place guest-ready in the tight window between checkout and check-in.',
 };
 
 export function Services() {

@@ -15,8 +15,7 @@ exception when duplicate_object then null; end $$;
 
 do $$ begin
   create type public.service_type as enum (
-    'house', 'apartment', 'airbnb', 'hotel', 'office',
-    'move_in_out', 'post_construction', 'deep_clean'
+    'house', 'apartment', 'airbnb', 'airbnb_express'
   );
 exception when duplicate_object then null; end $$;
 

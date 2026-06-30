@@ -4,11 +4,7 @@ export const SERVICE_TYPES = [
   'house',
   'apartment',
   'airbnb',
-  'hotel',
-  'office',
-  'move_in_out',
-  'post_construction',
-  'deep_clean',
+  'airbnb_express',
 ] as const;
 
 export const FREQUENCIES = ['one_time', 'weekly', 'biweekly', 'monthly'] as const;

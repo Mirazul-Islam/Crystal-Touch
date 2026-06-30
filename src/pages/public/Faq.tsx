@@ -7,7 +7,7 @@ const FAQS = [
   },
   {
     q: 'What areas and property types do you cover?',
-    a: 'We clean houses, apartments and condos, Airbnb and short-stay rentals, hotels, offices and commercial spaces, plus move-in/out and post-construction cleans.',
+    a: 'We clean houses, apartments and condos, and Airbnb / short-stay rentals — including fast same-day Airbnb Express turnarounds between guests.',
   },
   {
     q: 'Are your cleaners insured and background-checked?',
