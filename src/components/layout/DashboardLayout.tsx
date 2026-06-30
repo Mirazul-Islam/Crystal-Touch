@@ -34,7 +34,7 @@ export function DashboardLayout({ role }: { role: Extract<Role, 'admin' | 'clean
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-slate-50 print:block print:bg-white">
       {/* Sidebar */}
       <aside
         className={clsx(
