@@ -43,7 +43,8 @@ export function BookingTracking() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h1 className="text-2xl font-bold">
-                    Hi {data.booking.client_name.split(' ')[0]}, here’s your booking
+                    Hi {(data.booking.client_name ?? 'there').split(' ')[0]}, here’s your
+                    booking
                   </h1>
                   <p className="text-sm text-slate-500">
                     Requested on {formatDate(data.booking.created_at)}

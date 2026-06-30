@@ -22,9 +22,10 @@ export interface Profile {
 export interface Booking {
   id: string;
   public_token: string;
-  client_name: string;
-  client_email: string;
-  client_phone: string;
+  reference_code?: string | null;
+  client_name: string | null;
+  client_email: string | null;
+  client_phone: string | null;
   service_type: ServiceType;
   frequency: Frequency;
   bedrooms: number;
@@ -33,6 +34,8 @@ export interface Booking {
   address: string;
   city: string;
   postal_code: string | null;
+  buzz_code?: string | null;
+  company_supplies?: boolean;
   preferred_date: string | null;
   preferred_time: TimeSlot | null;
   notes: string | null;
@@ -68,10 +71,17 @@ export interface ChecklistItem {
   done: boolean;
 }
 
+export interface SupplyAlert {
+  item: string;
+  status: 'low' | 'out';
+}
+
 export interface Report {
   id: string;
   summary: string;
   checklist: ChecklistItem[];
+  closing_checklist: ChecklistItem[];
+  supply_alerts: SupplyAlert[];
   before_photos: string[];
   after_photos: string[];
   completed_at: string;
@@ -97,6 +107,8 @@ export interface BookingCreateInput {
   address: string;
   city: string;
   postal_code?: string | null;
+  buzz_code?: string | null;
+  company_supplies: boolean;
   preferred_date?: string | null;
   preferred_time?: TimeSlot | null;
   notes?: string | null;

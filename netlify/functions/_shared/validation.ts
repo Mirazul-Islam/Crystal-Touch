@@ -29,6 +29,8 @@ export const bookingCreateSchema = z.object({
   address: z.string().trim().min(3).max(240),
   city: z.string().trim().min(2).max(120),
   postal_code: z.string().trim().max(20).optional().nullable(),
+  buzz_code: z.string().trim().max(60).optional().nullable(),
+  company_supplies: z.boolean().default(false),
   preferred_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
   preferred_time: z.enum(TIME_SLOTS).optional().nullable(),
   notes: z.string().trim().max(2000).optional().nullable(),
@@ -55,6 +57,19 @@ export const reportCreateSchema = z.object({
   summary: z.string().trim().min(5).max(4000),
   checklist: z
     .array(z.object({ label: z.string().max(120), done: z.boolean() }))
+    .max(50)
+    .default([]),
+  closing_checklist: z
+    .array(z.object({ label: z.string().max(120), done: z.boolean() }))
+    .max(50)
+    .default([]),
+  supply_alerts: z
+    .array(
+      z.object({
+        item: z.string().max(120),
+        status: z.enum(['low', 'out']),
+      }),
+    )
     .max(50)
     .default([]),
   before_photos: z.array(z.string().max(500)).max(20).default([]),

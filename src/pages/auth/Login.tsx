@@ -85,7 +85,7 @@ export function Login() {
               <p className="mt-6 text-center text-xs text-slate-400">
                 Are you a client? You don’t need an account — just{' '}
                 <a href="/#book" className="text-brand-600 hover:underline">
-                  request a quote
+                  make a booking
                 </a>
                 .
               </p>

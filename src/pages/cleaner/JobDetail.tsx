@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Plus, Trash2, Check, Send } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Check, Send, CheckCheck, Coffee } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { Card, CardBody } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -17,7 +17,12 @@ import {
   createReport,
 } from '../../lib/api';
 import { formatDate } from '../../lib/format';
-import type { ChecklistItem } from '../../lib/types';
+import {
+  DEFAULT_CLOSING_CHECKLIST,
+  AIRBNB_SUPPLY_ITEMS,
+  isAirbnb,
+} from '../../lib/constants';
+import type { ChecklistItem, SupplyAlert } from '../../lib/types';
 
 const DEFAULT_CHECKLIST: ChecklistItem[] = [
   { label: 'Kitchen cleaned', done: false },
@@ -27,6 +32,11 @@ const DEFAULT_CHECKLIST: ChecklistItem[] = [
   { label: 'Surfaces dusted', done: false },
   { label: 'Trash removed', done: false },
 ];
+
+const DEFAULT_CLOSING: ChecklistItem[] = DEFAULT_CLOSING_CHECKLIST.map((label) => ({
+  label,
+  done: false,
+}));
 
 export function JobDetail() {
   const { id = '' } = useParams();
@@ -39,6 +49,8 @@ export function JobDetail() {
   // report state
   const [summary, setSummary] = useState('');
   const [checklist, setChecklist] = useState<ChecklistItem[]>(DEFAULT_CHECKLIST);
+  const [closing, setClosing] = useState<ChecklistItem[]>(DEFAULT_CLOSING);
+  const [supplyAlerts, setSupplyAlerts] = useState<SupplyAlert[]>([]);
   const [newItem, setNewItem] = useState('');
   const [beforePhotos, setBeforePhotos] = useState<string[]>([]);
   const [afterPhotos, setAfterPhotos] = useState<string[]>([]);
@@ -60,6 +72,12 @@ export function JobDetail() {
       setChecklist(
         existingReport.checklist.length ? existingReport.checklist : DEFAULT_CHECKLIST,
       );
+      setClosing(
+        existingReport.closing_checklist?.length
+          ? existingReport.closing_checklist
+          : DEFAULT_CLOSING,
+      );
+      setSupplyAlerts(existingReport.supply_alerts ?? []);
       setBeforePhotos(existingReport.before_photos);
       setAfterPhotos(existingReport.after_photos);
     }
@@ -86,6 +104,8 @@ export function JobDetail() {
         booking_id: id,
         summary: summary.trim(),
         checklist,
+        closing_checklist: closing,
+        supply_alerts: supplyAlerts,
         before_photos: beforePhotos,
         after_photos: afterPhotos,
       }),
@@ -128,9 +148,31 @@ export function JobDetail() {
     setNewItem('');
   }
 
+  function toggleClosing(idx: number) {
+    setClosing((list) =>
+      list.map((it, i) => (i === idx ? { ...it, done: !it.done } : it)),
+    );
+  }
+  function selectAllClosing() {
+    const allDone = closing.every((c) => c.done);
+    setClosing((list) => list.map((c) => ({ ...c, done: !allDone })));
+  }
+
+  function supplyStatus(item: string): 'low' | 'out' | null {
+    return supplyAlerts.find((a) => a.item === item)?.status ?? null;
+  }
+  function setSupply(item: string, status: 'low' | 'out' | null) {
+    setSupplyAlerts((list) => {
+      const without = list.filter((a) => a.item !== item);
+      return status ? [...without, { item, status }] : without;
+    });
+  }
+
+  const showSupplies = isAirbnb(booking.service_type);
+
   return (
     <>
-      <Seo title={`Job — ${booking.client_name}`} noindex />
+      <Seo title={`Job — ${booking.reference_code ?? booking.address}`} noindex />
 
       <Link
         to="/cleaner"
@@ -140,7 +182,13 @@ export function JobDetail() {
       </Link>
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">{booking.client_name}</h1>
+        <div>
+          <h1 className="text-2xl font-bold">{booking.address}</h1>
+          <p className="text-sm text-slate-500">
+            {booking.city}
+            {booking.reference_code ? ` · Ref ${booking.reference_code}` : ''}
+          </p>
+        </div>
         <StatusBadge status={booking.status} />
       </div>
 
@@ -257,19 +305,105 @@ export function JobDetail() {
                   </div>
                 </div>
 
+                {/* Closing / security checklist */}
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="label-base mb-0">Before you leave</p>
+                    <button
+                      type="button"
+                      onClick={selectAllClosing}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-700"
+                    >
+                      <CheckCheck className="h-4 w-4" />
+                      {closing.every((c) => c.done) ? 'Clear all' : 'Select all'}
+                    </button>
+                  </div>
+                  <div className="grid gap-1.5 sm:grid-cols-2">
+                    {closing.map((item, idx) => (
+                      <button
+                        type="button"
+                        key={idx}
+                        onClick={() => toggleClosing(idx)}
+                        className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition ${
+                          item.done
+                            ? 'border-brand-500 bg-brand-50 text-brand-800'
+                            : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        <span
+                          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                            item.done
+                              ? 'border-brand-600 bg-brand-600 text-white'
+                              : 'border-slate-300'
+                          }`}
+                        >
+                          {item.done && <Check className="h-3 w-3" />}
+                        </span>
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Airbnb restock alerts */}
+                {showSupplies && (
+                  <div>
+                    <div className="mb-1 flex items-center gap-2">
+                      <Coffee className="h-4 w-4 text-accent-600" />
+                      <p className="label-base mb-0">Let the host know what’s running low</p>
+                    </div>
+                    <p className="mb-2 text-xs text-slate-500">
+                      Tap an item to flag it as Low or Out (for Airbnb restocking).
+                    </p>
+                    <div className="space-y-1.5">
+                      {AIRBNB_SUPPLY_ITEMS.map((item) => {
+                        const status = supplyStatus(item);
+                        return (
+                          <div
+                            key={item}
+                            className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-1.5"
+                          >
+                            <span className="text-sm text-slate-700">{item}</span>
+                            <div className="flex gap-1">
+                              {(['low', 'out'] as const).map((s) => (
+                                <button
+                                  type="button"
+                                  key={s}
+                                  onClick={() => setSupply(item, status === s ? null : s)}
+                                  className={`rounded-full px-2.5 py-0.5 text-xs font-semibold transition ${
+                                    status === s
+                                      ? s === 'out'
+                                        ? 'bg-red-100 text-red-700 ring-1 ring-red-200'
+                                        : 'bg-amber-100 text-amber-700 ring-1 ring-amber-200'
+                                      : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                  }`}
+                                >
+                                  {s === 'out' ? 'Out' : 'Low'}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Before photos">
+                  <Field label="Before photos (at start)">
                     <PhotoUploader
                       bookingId={id}
                       value={beforePhotos}
                       onChange={setBeforePhotos}
+                      label="Add before"
                     />
                   </Field>
-                  <Field label="After photos">
+                  <Field label="After photos (when finished)">
                     <PhotoUploader
                       bookingId={id}
                       value={afterPhotos}
                       onChange={setAfterPhotos}
+                      label="Add after"
                     />
                   </Field>
                 </div>
@@ -301,7 +435,7 @@ export function JobDetail() {
           <Card>
             <CardBody>
               <h2 className="mb-4 text-lg font-semibold">Job details</h2>
-              <BookingSummary booking={booking} showContact />
+              <BookingSummary booking={booking} />
             </CardBody>
           </Card>
           <Card>

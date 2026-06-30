@@ -14,6 +14,7 @@ import {
   FREQUENCY_OPTIONS,
   TIME_SLOT_OPTIONS,
   EXTRA_OPTIONS,
+  SUPPLIES_OPTIONS,
 } from '../../lib/constants';
 import { Button } from '../../components/ui/Button';
 import { Field, Input, Select, Textarea } from '../../components/ui/Field';
@@ -48,6 +49,7 @@ export function BookingForm() {
 
   const serviceType = watch('service_type');
   const extras = watch('extras');
+  const companySupplies = watch('company_supplies');
 
   function toggleExtra(extra: string) {
     const set = new Set(extras);
@@ -59,15 +61,16 @@ export function BookingForm() {
   async function onSubmit(values: BookingFormValues) {
     setServerError(null);
     try {
-      const { token } = await createBooking({
+      const { token, reference_code } = await createBooking({
         ...values,
         postal_code: values.postal_code || null,
+        buzz_code: values.buzz_code || null,
         preferred_date: values.preferred_date || null,
         preferred_time: values.preferred_time ?? null,
         notes: values.notes || null,
       });
       navigate('/thank-you', {
-        state: { token, name: values.client_name },
+        state: { token, reference_code, name: values.client_name },
       });
     } catch (err) {
       const msg =
@@ -225,12 +228,55 @@ export function BookingForm() {
           <Field label="Postal / ZIP" htmlFor="postal_code" className="sm:col-span-2">
             <Input id="postal_code" {...register('postal_code')} />
           </Field>
+          <Field
+            label="Buzz / access code"
+            htmlFor="buzz_code"
+            hint="Door buzzer, gate, lockbox or entry code (if any)."
+            className="sm:col-span-4"
+          >
+            <Input
+              id="buzz_code"
+              placeholder="e.g. #1234 or buzz 102"
+              {...register('buzz_code')}
+            />
+          </Field>
         </div>
       </section>
 
-      {/* 6. Contact */}
+      {/* 6. Supplies */}
       <section>
-        <SectionTitle step={6} title="Your contact details" />
+        <SectionTitle step={6} title="Cleaning supplies" />
+        <p className="-mt-2 mb-4 text-sm text-slate-500">
+          Will you provide the cleaning supplies, or should we bring them?
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {SUPPLIES_OPTIONS.map((opt) => {
+            const selected = companySupplies === opt.value;
+            return (
+              <button
+                type="button"
+                key={String(opt.value)}
+                onClick={() => setValue('company_supplies', opt.value)}
+                className={clsx(
+                  'rounded-xl border p-4 text-left transition',
+                  selected
+                    ? 'border-brand-500 bg-brand-50 ring-2 ring-brand-200'
+                    : 'border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50',
+                )}
+              >
+                <span className="block text-sm font-semibold text-slate-800">
+                  {opt.label}
+                </span>
+                <span className="mt-0.5 block text-sm text-brand-600">{opt.blurb}</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 7. Contact */}
+      <section>
+        <SectionTitle step={7} title="Your contact details" />
         <div className="grid gap-4 sm:grid-cols-3">
           <Field
             label="Full name"
@@ -281,10 +327,15 @@ export function BookingForm() {
 
       <div className="flex flex-col items-start gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-slate-500">
-          No payment required now — we’ll confirm your quote by email or phone.
+          No payment now — we’ll confirm your booking by email or phone. Final price
+          is set after the clean at{' '}
+          <span className="font-semibold text-slate-700">
+            {companySupplies ? '$40' : '$25'}/hr per cleaner
+          </span>
+          .
         </p>
         <Button type="submit" size="lg" loading={isSubmitting}>
-          Request my free quote
+          Submit booking request
         </Button>
       </div>
     </form>

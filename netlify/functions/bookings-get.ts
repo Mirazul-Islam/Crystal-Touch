@@ -12,7 +12,7 @@ import {
 } from './_shared/http';
 
 const BOOKING_COLUMNS =
-  'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number, recurrence_parent_id, created_at, updated_at';
+  'id, public_token, reference_code, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number, recurrence_parent_id, created_at, updated_at';
 
 /**
  * Returns a single booking with its job updates, final report, and — for
@@ -20,6 +20,9 @@ const BOOKING_COLUMNS =
  *
  *  - `?token=<public_token>`  → public client tracking (no auth)
  *  - `?id=<booking_id>`       → admin (any) or the assigned cleaner (auth required)
+ *
+ * Cleaners never receive the client's contact details (name/email/phone) —
+ * only the address and buzz code they need to do the job.
  */
 export const handler: Handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return preflight();
@@ -45,11 +48,13 @@ export const handler: Handler = async (event) => {
     if (!booking) return notFound('Booking not found');
 
     const isClientView = Boolean(token);
+    let stripContact = false;
     if (!token) {
       const user = await getUser(event); // throws 401 if not signed in
       const allowed =
         user.role === 'admin' || booking.assigned_cleaner_id === user.id;
       if (!allowed) return forbidden('You do not have access to this booking');
+      stripContact = user.role === 'cleaner';
     }
 
     const [{ data: updates }, { data: report }, { data: siblings }] =
@@ -62,7 +67,7 @@ export const handler: Handler = async (event) => {
         supabase
           .from('reports')
           .select(
-            'id, summary, checklist, before_photos, after_photos, completed_at',
+            'id, summary, checklist, closing_checklist, supply_alerts, before_photos, after_photos, completed_at',
           )
           .eq('booking_id', booking.id)
           .maybeSingle(),
@@ -73,7 +78,6 @@ export const handler: Handler = async (event) => {
           .order('visit_number', { ascending: true }),
       ]);
 
-    // Mark which visits in the series already have a report.
     let series = (siblings ?? []).map((s) => ({ ...s, has_report: false }));
     if (series.length > 1) {
       const ids = series.map((s) => s.id);
@@ -83,6 +87,13 @@ export const handler: Handler = async (event) => {
         .in('booking_id', ids);
       const withReport = new Set((reported ?? []).map((r) => r.booking_id));
       series = series.map((s) => ({ ...s, has_report: withReport.has(s.id) }));
+    }
+
+    // Hide client contact info from cleaners.
+    if (stripContact) {
+      booking.client_name = null;
+      booking.client_email = null;
+      booking.client_phone = null;
     }
 
     return ok({

@@ -42,13 +42,13 @@ const jsonLd = {
 const HOW_IT_WORKS = [
   {
     icon: CalendarCheck,
-    title: 'Request a quote',
+    title: 'Make a booking',
     text: 'Tell us what needs cleaning and when. It takes about a minute — no payment up front.',
   },
   {
     icon: UserCheck,
     title: 'We dispatch a cleaner',
-    text: 'Our team confirms your quote and assigns a vetted, insured cleaner to your job.',
+    text: 'Our team confirms your booking and assigns a vetted, insured cleaner to your job.',
   },
   {
     icon: Sparkles,
@@ -118,7 +118,7 @@ export function Home() {
     <>
       <Seo
         title="Crystal Touch Cleaning | Professional Home, Airbnb & Commercial Cleaning"
-        description="Book trusted, professional cleaners for your home, apartment or Airbnb. Transparent quotes and a detailed after-service report on every job."
+        description="Book trusted, professional cleaners for your home, apartment or Airbnb from $25/hour per cleaner. A detailed after-service report on every job."
         path="/"
         jsonLd={jsonLd}
       />
@@ -142,7 +142,7 @@ export function Home() {
                 href="#book"
                 className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50"
               >
-                Get a free quote <ArrowRight className="h-4 w-4" />
+                Book a cleaning <ArrowRight className="h-4 w-4" />
               </a>
               <Link
                 to="/services"
@@ -266,10 +266,12 @@ export function Home() {
       <section id="book" className="section scroll-mt-16 bg-slate-50">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold">Request your free quote</h2>
+            <h2 className="text-3xl font-bold">Book your cleaning</h2>
             <p className="mt-3 text-slate-600">
-              Fill in a few details and our team will confirm your quote and dispatch a
-              cleaner. No account needed.
+              Fill in a few details and our team will confirm your booking and dispatch a
+              cleaner. No account needed — just{' '}
+              <span className="font-semibold text-slate-700">$25/hour per cleaner</span>{' '}
+              (or $40 if we bring the supplies).
             </p>
           </div>
           <Card className="mx-auto mt-10 max-w-4xl">

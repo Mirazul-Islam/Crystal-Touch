@@ -13,6 +13,8 @@ export const bookingFormSchema = z.object({
   address: z.string().min(3, 'Please enter the address'),
   city: z.string().min(2, 'Please enter the city'),
   postal_code: z.string().optional(),
+  buzz_code: z.string().optional(),
+  company_supplies: z.boolean(),
 
   client_name: z.string().min(2, 'Please enter your name'),
   client_email: z.string().email('Enter a valid email'),
@@ -34,6 +36,8 @@ export const bookingFormDefaults: BookingFormValues = {
   address: '',
   city: '',
   postal_code: '',
+  buzz_code: '',
+  company_supplies: false,
   client_name: '',
   client_email: '',
   client_phone: '',

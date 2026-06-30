@@ -14,6 +14,8 @@ import { Login } from './pages/auth/Login';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminBookingDetail } from './pages/admin/AdminBookingDetail';
 import { Cleaners } from './pages/admin/Cleaners';
+import { AdminClients } from './pages/admin/AdminClients';
+import { AdminClientDetail } from './pages/admin/AdminClientDetail';
 
 import { CleanerDashboard } from './pages/cleaner/CleanerDashboard';
 import { JobDetail } from './pages/cleaner/JobDetail';
@@ -43,6 +45,8 @@ export default function App() {
       >
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/bookings/:id" element={<AdminBookingDetail />} />
+        <Route path="/admin/clients" element={<AdminClients />} />
+        <Route path="/admin/clients/:email" element={<AdminClientDetail />} />
         <Route path="/admin/cleaners" element={<Cleaners />} />
       </Route>
 

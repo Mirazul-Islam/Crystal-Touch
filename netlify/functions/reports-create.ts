@@ -14,7 +14,7 @@ import {
 } from './_shared/http';
 
 const COPY_COLUMNS =
-  'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number';
+  'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number';
 
 /** Compute the next visit date (YYYY-MM-DD) from today for a recurring booking. */
 function nextDate(frequency: string): string {
@@ -68,6 +68,8 @@ export const handler: Handler = async (event) => {
           cleaner_id: user.id,
           summary: parsed.data.summary,
           checklist: parsed.data.checklist,
+          closing_checklist: parsed.data.closing_checklist,
+          supply_alerts: parsed.data.supply_alerts,
           before_photos: parsed.data.before_photos,
           after_photos: parsed.data.after_photos,
           completed_at: new Date().toISOString(),
@@ -113,6 +115,8 @@ export const handler: Handler = async (event) => {
             address: booking.address,
             city: booking.city,
             postal_code: booking.postal_code,
+            buzz_code: booking.buzz_code,
+            company_supplies: booking.company_supplies,
             preferred_date: due,
             preferred_time: booking.preferred_time,
             notes: booking.notes,

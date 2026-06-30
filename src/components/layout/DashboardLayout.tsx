@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, LogOut, Sparkles, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, Sparkles, Menu, X, Contact } from 'lucide-react';
 import clsx from 'clsx';
 import { useAuth } from '../../context/AuthContext';
 import { Logo } from './Logo';
@@ -16,6 +16,7 @@ interface NavItem {
 const NAV_BY_ROLE: Record<'admin' | 'cleaner', NavItem[]> = {
   admin: [
     { to: '/admin', label: 'Dispatch board', icon: LayoutDashboard, end: true },
+    { to: '/admin/clients', label: 'Clients', icon: Contact },
     { to: '/admin/cleaners', label: 'Cleaners', icon: Users },
   ],
   cleaner: [{ to: '/cleaner', label: 'My jobs', icon: Sparkles, end: true }],
@@ -37,7 +38,7 @@ export function DashboardLayout({ role }: { role: Extract<Role, 'admin' | 'clean
       {/* Sidebar */}
       <aside
         className={clsx(
-          'fixed inset-y-0 left-0 z-40 w-64 transform border-r border-slate-200 bg-white transition-transform md:static md:translate-x-0',
+          'fixed inset-y-0 left-0 z-40 w-64 transform border-r border-slate-200 bg-white transition-transform md:static md:translate-x-0 print:hidden',
           open ? 'translate-x-0' : '-translate-x-full',
         )}
       >
@@ -83,7 +84,7 @@ export function DashboardLayout({ role }: { role: Extract<Role, 'admin' | 'clean
 
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-6">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-6 print:hidden">
           <button
             className="rounded-md p-2 text-slate-600 md:hidden"
             onClick={() => setOpen(true)}

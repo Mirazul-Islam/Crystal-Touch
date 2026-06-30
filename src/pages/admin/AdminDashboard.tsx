@@ -42,7 +42,7 @@ export function AdminDashboard() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Dispatch board</h1>
         <p className="text-sm text-slate-500">
-          Review incoming requests, send quotes and assign cleaners.
+          Review incoming requests, set prices and assign cleaners.
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export function AdminDashboard() {
                   <th className="px-5 py-3 font-medium">Location</th>
                   <th className="px-5 py-3 font-medium">Requested</th>
                   <th className="px-5 py-3 font-medium">Cleaner</th>
-                  <th className="px-5 py-3 font-medium">Quote</th>
+                  <th className="px-5 py-3 font-medium">Price</th>
                   <th className="px-5 py-3 font-medium">Status</th>
                   <th className="px-5 py-3" />
                 </tr>
@@ -99,7 +99,14 @@ export function AdminDashboard() {
                   <tr key={b.id} className="hover:bg-slate-50">
                     <td className="px-5 py-3">
                       <p className="font-semibold text-slate-800">{b.client_name}</p>
-                      <p className="text-xs text-slate-500">{b.client_email}</p>
+                      {b.client_email && (
+                        <Link
+                          to={`/admin/clients/${encodeURIComponent(b.client_email)}`}
+                          className="text-xs text-brand-600 hover:underline"
+                        >
+                          {b.client_email}
+                        </Link>
+                      )}
                     </td>
                     <td className="px-5 py-3 text-slate-600">
                       <div className="flex flex-col items-start gap-1">
