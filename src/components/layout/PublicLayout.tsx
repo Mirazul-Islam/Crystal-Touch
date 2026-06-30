@@ -97,8 +97,8 @@ function Footer() {
         <div className="md:col-span-2">
           <Logo light />
           <p className="mt-4 max-w-sm text-sm text-slate-400">
-            Professional, fully-insured cleaning for homes, Airbnbs, hotels and
-            offices. Trusted cleaners, transparent pricing, and a detailed report
+            Professional, fully-insured cleaning for homes, apartments and Airbnb
+            rentals. Trusted cleaners, transparent pricing, and a detailed report
             after every visit.
           </p>
           <a
@@ -120,9 +120,9 @@ function Footer() {
         <div>
           <h4 className="text-sm font-semibold text-white">Service areas</h4>
           <ul className="mt-4 space-y-2 text-sm text-slate-400">
-            <li>Residential &amp; apartments</li>
+            <li>Houses &amp; apartments</li>
             <li>Airbnb &amp; short-stay turnovers</li>
-            <li>Hotels &amp; commercial offices</li>
+            <li>Airbnb Express same-day turnarounds</li>
           </ul>
         </div>
       </div>

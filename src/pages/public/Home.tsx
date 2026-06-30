@@ -22,7 +22,7 @@ const jsonLd = {
   '@type': 'CleaningService',
   name: 'Crystal Touch Cleaning',
   description:
-    'Professional cleaning services for homes, apartments, Airbnbs, hotels and offices with detailed after-service reports.',
+    'Professional cleaning services for homes, apartments and Airbnb rentals with detailed after-service reports.',
   image: 'https://crystaltouch.example.com/og-image.png',
   url: 'https://crystaltouch.example.com/',
   telephone: '+1-000-000-0000',
@@ -94,9 +94,9 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      'Reliable, thorough, and friendly. Our office has never looked better and scheduling is effortless.',
+      'Their Airbnb Express turnaround saved a same-day booking for me — guest-ready in hours, with photos to prove it.',
     name: 'Daniel K.',
-    role: 'Office manager',
+    role: 'Airbnb Express host',
   },
   {
     quote:
@@ -118,7 +118,7 @@ export function Home() {
     <>
       <Seo
         title="Crystal Touch Cleaning | Professional Home, Airbnb & Commercial Cleaning"
-        description="Book trusted, professional cleaners for your home, apartment, Airbnb, hotel or office. Transparent quotes and a detailed after-service report on every job."
+        description="Book trusted, professional cleaners for your home, apartment or Airbnb. Transparent quotes and a detailed after-service report on every job."
         path="/"
         jsonLd={jsonLd}
       />
@@ -134,7 +134,7 @@ export function Home() {
               Spotless homes & spaces, with a report you can trust
             </h1>
             <p className="mt-5 max-w-lg text-lg text-brand-50">
-              Professional cleaning for homes, apartments, Airbnbs, hotels and offices.
+              Professional cleaning for homes, apartments and Airbnb rentals.
               Vetted, insured cleaners and a photo-backed report after every visit.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -173,7 +173,7 @@ export function Home() {
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold">Cleaning services for every space</h2>
             <p className="mt-3 text-slate-600">
-              From a quick apartment refresh to full hotel and post-construction cleans,
+              From a quick apartment refresh to a five-star Airbnb turnaround,
               Crystal Touch has a trained team for the job.
             </p>
           </div>

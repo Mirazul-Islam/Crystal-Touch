@@ -1,14 +1,4 @@
-import {
-  Home,
-  Building2,
-  BedDouble,
-  Hotel,
-  Briefcase,
-  Truck,
-  HardHat,
-  Sparkles,
-  type LucideIcon,
-} from 'lucide-react';
+import { Home, Building2, BedDouble, Zap, type LucideIcon } from 'lucide-react';
 import type {
   BookingStatus,
   Frequency,
@@ -25,18 +15,28 @@ export interface ServiceOption {
 
 export const SERVICE_OPTIONS: ServiceOption[] = [
   { value: 'house', label: 'House', blurb: 'Standard home cleaning', icon: Home },
-  { value: 'apartment', label: 'Apartment / Condo', blurb: 'Flats & condos', icon: Building2 },
-  { value: 'airbnb', label: 'Airbnb / Short-stay', blurb: 'Turnover cleans', icon: BedDouble },
-  { value: 'hotel', label: 'Hotel', blurb: 'Rooms & common areas', icon: Hotel },
-  { value: 'office', label: 'Office / Commercial', blurb: 'Workspaces', icon: Briefcase },
-  { value: 'move_in_out', label: 'Move In / Out', blurb: 'Empty property deep clean', icon: Truck },
-  { value: 'post_construction', label: 'Post-Construction', blurb: 'After renovation', icon: HardHat },
-  { value: 'deep_clean', label: 'Deep Clean', blurb: 'Top-to-bottom one-off', icon: Sparkles },
+  { value: 'apartment', label: 'Apartment', blurb: 'Flats & condos', icon: Building2 },
+  { value: 'airbnb', label: 'Airbnb', blurb: 'Guest turnover clean', icon: BedDouble },
+  {
+    value: 'airbnb_express',
+    label: 'Airbnb Express',
+    blurb: 'Fast same-day turnaround',
+    icon: Zap,
+  },
 ];
 
-export const SERVICE_LABELS: Record<ServiceType, string> = Object.fromEntries(
-  SERVICE_OPTIONS.map((s) => [s.value, s.label]),
-) as Record<ServiceType, string>;
+// Includes legacy values so any older bookings still render a readable label.
+export const SERVICE_LABELS: Record<string, string> = {
+  house: 'House',
+  apartment: 'Apartment',
+  airbnb: 'Airbnb',
+  airbnb_express: 'Airbnb Express',
+  hotel: 'Hotel',
+  office: 'Office / Commercial',
+  move_in_out: 'Move In / Out',
+  post_construction: 'Post-Construction',
+  deep_clean: 'Deep Clean',
+};
 
 export const FREQUENCY_OPTIONS: { value: Frequency; label: string }[] = [
   { value: 'one_time', label: 'One-time' },

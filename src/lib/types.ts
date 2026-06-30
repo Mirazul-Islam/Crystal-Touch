@@ -1,14 +1,6 @@
 export type Role = 'admin' | 'cleaner' | 'client';
 
-export type ServiceType =
-  | 'house'
-  | 'apartment'
-  | 'airbnb'
-  | 'hotel'
-  | 'office'
-  | 'move_in_out'
-  | 'post_construction'
-  | 'deep_clean';
+export type ServiceType = 'house' | 'apartment' | 'airbnb' | 'airbnb_express';
 
 export type Frequency = 'one_time' | 'weekly' | 'biweekly' | 'monthly';
 export type TimeSlot = 'morning' | 'afternoon' | 'evening';

@@ -1,16 +1,7 @@
 import { z } from 'zod';
 
 export const bookingFormSchema = z.object({
-  service_type: z.enum([
-    'house',
-    'apartment',
-    'airbnb',
-    'hotel',
-    'office',
-    'move_in_out',
-    'post_construction',
-    'deep_clean',
-  ]),
+  service_type: z.enum(['house', 'apartment', 'airbnb', 'airbnb_express']),
   frequency: z.enum(['one_time', 'weekly', 'biweekly', 'monthly']),
   bedrooms: z.coerce.number().int().min(0).max(20),
   bathrooms: z.coerce.number().int().min(0).max(20),
