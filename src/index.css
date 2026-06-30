@@ -26,13 +26,27 @@
     }
   }
 
-  /* Print: white background, no app chrome margins (clean invoice output). */
+  /* Print: clean, official invoice output. */
+  @page {
+    margin: 16mm;
+  }
   @media print {
     body {
       background: #fff;
     }
     main {
       padding: 0 !important;
+    }
+    /* Force logo colours, the table header band and borders to actually print. */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .invoice-sheet {
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
     }
   }
 

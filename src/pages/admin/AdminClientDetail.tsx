@@ -251,6 +251,7 @@ export function AdminClientDetail() {
       <Card className="print:border-0 print:shadow-none">
         <Invoice
           invoiceNumber={invoiceNumber}
+          issuedAt={new Date().toISOString().slice(0, 10)}
           clientName={client?.name ?? clientEmail}
           clientAddress={clientAddress}
           periodLabel={periodLabel}
