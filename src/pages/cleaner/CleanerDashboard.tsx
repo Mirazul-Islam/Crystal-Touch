@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin, CalendarClock, ArrowRight } from 'lucide-react';
+import { MapPin, CalendarClock, ArrowRight, KeyRound } from 'lucide-react';
 import { Seo } from '../../components/Seo';
 import { Card, CardBody } from '../../components/ui/Card';
 import { StatusBadge, RecurringBadge } from '../../components/ui/Badge';
@@ -82,7 +82,7 @@ function JobCard({ job }: { job: Booking }) {
               <p className="font-semibold text-slate-900">
                 {SERVICE_LABELS[job.service_type]} clean
               </p>
-              <p className="text-sm text-slate-500">{job.client_name}</p>
+              <p className="text-sm text-slate-500">{job.reference_code}</p>
             </div>
             <div className="flex flex-col items-end gap-1">
               <StatusBadge status={job.status} />
@@ -93,6 +93,11 @@ function JobCard({ job }: { job: Booking }) {
             <p className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-slate-400" /> {job.address}, {job.city}
             </p>
+            {job.buzz_code && (
+              <p className="flex items-center gap-2">
+                <KeyRound className="h-4 w-4 text-slate-400" /> Buzz: {job.buzz_code}
+              </p>
+            )}
             <p className="flex items-center gap-2">
               <CalendarClock className="h-4 w-4 text-slate-400" />
               {job.preferred_date ? formatDate(job.preferred_date) : 'Flexible'}

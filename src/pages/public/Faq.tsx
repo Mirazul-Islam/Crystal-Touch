@@ -3,7 +3,7 @@ import { Seo } from '../../components/Seo';
 const FAQS = [
   {
     q: 'Do I need to create an account to book?',
-    a: 'No. Just fill in the quote request on our home page with your contact and property details. We’ll confirm your quote and dispatch a cleaner. You’ll get a private link to track your booking and view the report.',
+    a: 'No. Just fill in the booking form on our home page with your contact and property details. We’ll confirm your booking and dispatch a cleaner. You’ll get a private link to track your booking and view the report.',
   },
   {
     q: 'What areas and property types do you cover?',
@@ -19,11 +19,11 @@ const FAQS = [
   },
   {
     q: 'How do I pay?',
-    a: 'There’s no payment when you request a quote. We confirm pricing first, then arrange payment — so there are no surprises.',
+    a: 'Our rate is $25/hour per cleaner if you provide the supplies, or $40/hour per cleaner if we bring them. There’s no payment when you book — the final price is set after the clean based on the time spent, then we arrange payment.',
   },
   {
     q: 'Can I book recurring cleans?',
-    a: 'Absolutely. Choose weekly, bi-weekly or monthly when you request your quote, and we’ll set up a regular schedule with a consistent cleaner where possible.',
+    a: 'Absolutely. Choose weekly, bi-weekly or monthly when you book, and we’ll set up a regular schedule with a consistent cleaner where possible.',
   },
 ];
 

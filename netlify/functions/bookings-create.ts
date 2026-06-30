@@ -30,7 +30,7 @@ export const handler: Handler = async (event) => {
     const { data, error } = await supabase
       .from('bookings')
       .insert({ ...parsed.data, status: 'new' })
-      .select('id, public_token')
+      .select('id, public_token, reference_code')
       .single();
 
     if (error || !data) {
@@ -38,7 +38,11 @@ export const handler: Handler = async (event) => {
       return serverError('Could not create booking');
     }
 
-    return created({ id: data.id, token: data.public_token });
+    return created({
+      id: data.id,
+      token: data.public_token,
+      reference_code: data.reference_code,
+    });
   } catch (err) {
     if (err instanceof HttpError) return err.response;
     console.error('bookings-create error', err);

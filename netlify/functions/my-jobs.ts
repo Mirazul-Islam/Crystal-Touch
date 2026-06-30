@@ -20,7 +20,8 @@ export const handler: Handler = async (event) => {
     const { data, error } = await supabase
       .from('bookings')
       .select(
-        'id, client_name, service_type, frequency, bedrooms, bathrooms, address, city, postal_code, preferred_date, preferred_time, status, estimated_price, visit_number, created_at',
+        // No client contact fields — cleaners only get the job location + access.
+        'id, reference_code, service_type, frequency, bedrooms, bathrooms, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, status, estimated_price, visit_number, created_at',
       )
       .eq('assigned_cleaner_id', user.id)
       .in('status', ['assigned', 'in_progress', 'completed'])

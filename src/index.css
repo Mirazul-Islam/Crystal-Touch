@@ -26,6 +26,16 @@
     }
   }
 
+  /* Print: white background, no app chrome margins (clean invoice output). */
+  @media print {
+    body {
+      background: #fff;
+    }
+    main {
+      padding: 0 !important;
+    }
+  }
+
   /* Honor reduced-motion: stop the hero from floating / sweeping. */
   @media (prefers-reduced-motion: reduce) {
     *,

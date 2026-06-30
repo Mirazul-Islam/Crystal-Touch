@@ -9,12 +9,16 @@ import {
   User,
   Mail,
   Phone,
+  KeyRound,
+  Package,
+  Hash,
 } from 'lucide-react';
 import type { Booking } from '../../lib/types';
 import {
   SERVICE_LABELS,
   FREQUENCY_LABELS,
   TIME_SLOT_LABELS,
+  hourlyRate,
 } from '../../lib/constants';
 import { formatDate, formatPrice } from '../../lib/format';
 import { Pill } from '../ui/Badge';
@@ -42,8 +46,15 @@ export function BookingSummary({
     .filter(Boolean)
     .join(' · ');
 
+  const rate = hourlyRate(Boolean(booking.company_supplies));
+
   return (
     <div className="grid gap-3 sm:grid-cols-2">
+      {booking.reference_code && (
+        <Row icon={<Hash className="h-4 w-4" />}>
+          Ref <span className="font-semibold">{booking.reference_code}</span>
+        </Row>
+      )}
       <Row icon={<Tag className="h-4 w-4" />}>
         <span className="font-semibold">{SERVICE_LABELS[booking.service_type]}</span>
         {' cleaning'}
@@ -57,12 +68,21 @@ export function BookingSummary({
         {booking.address}, {booking.city}
         {booking.postal_code ? ` ${booking.postal_code}` : ''}
       </Row>
+      {booking.buzz_code && (
+        <Row icon={<KeyRound className="h-4 w-4" />}>
+          Buzz / access: <span className="font-semibold">{booking.buzz_code}</span>
+        </Row>
+      )}
       <Row icon={<CalendarClock className="h-4 w-4" />}>
         {schedule || 'Flexible timing'}
       </Row>
+      <Row icon={<Package className="h-4 w-4" />}>
+        {booking.company_supplies ? 'We bring supplies' : 'Client provides supplies'}{' '}
+        <span className="text-slate-400">· ${rate}/hr per cleaner</span>
+      </Row>
       {booking.estimated_price != null && (
         <Row icon={<Tag className="h-4 w-4" />}>
-          Quote: <span className="font-semibold">{formatPrice(booking.estimated_price)}</span>
+          Price: <span className="font-semibold">{formatPrice(booking.estimated_price)}</span>
         </Row>
       )}
 
@@ -96,16 +116,24 @@ export function BookingSummary({
             Client contact
           </p>
           <div className="grid gap-2 sm:grid-cols-3">
-            <Row icon={<User className="h-4 w-4" />}>{booking.client_name}</Row>
+            <Row icon={<User className="h-4 w-4" />}>{booking.client_name ?? '—'}</Row>
             <Row icon={<Mail className="h-4 w-4" />}>
-              <a href={`mailto:${booking.client_email}`} className="hover:text-brand-600">
-                {booking.client_email}
-              </a>
+              {booking.client_email ? (
+                <a href={`mailto:${booking.client_email}`} className="hover:text-brand-600">
+                  {booking.client_email}
+                </a>
+              ) : (
+                '—'
+              )}
             </Row>
             <Row icon={<Phone className="h-4 w-4" />}>
-              <a href={`tel:${booking.client_phone}`} className="hover:text-brand-600">
-                {booking.client_phone}
-              </a>
+              {booking.client_phone ? (
+                <a href={`tel:${booking.client_phone}`} className="hover:text-brand-600">
+                  {booking.client_phone}
+                </a>
+              ) : (
+                '—'
+              )}
             </Row>
           </div>
         </div>

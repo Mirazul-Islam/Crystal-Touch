@@ -73,10 +73,13 @@ async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
 
 // --- Public ---------------------------------------------------------------
 export function createBooking(input: BookingCreateInput) {
-  return request<{ id: string; token: string }>('bookings-create', {
-    method: 'POST',
-    body: input,
-  });
+  return request<{ id: string; token: string; reference_code: string }>(
+    'bookings-create',
+    {
+      method: 'POST',
+      body: input,
+    },
+  );
 }
 
 export function getBookingByToken(token: string) {
@@ -97,6 +100,33 @@ export function listBookings(status?: BookingStatus) {
 
 export function listMyJobs() {
   return request<{ bookings: Booking[] }>('my-jobs', { auth: true });
+}
+
+export interface ClientSummary {
+  email: string;
+  name: string | null;
+  phone: string | null;
+  bookings: number;
+  completed: number;
+  total: number;
+  last_booking_at: string;
+}
+
+export function listClients() {
+  return request<{ clients: ClientSummary[] }>('clients-list', { auth: true });
+}
+
+export function listBookingsByEmail(
+  email: string,
+  range?: { from?: string; to?: string },
+) {
+  return request<{
+    client: { name: string | null; email: string; phone: string | null };
+    bookings: Booking[];
+  }>('bookings-by-email', {
+    auth: true,
+    query: { email, from: range?.from, to: range?.to },
+  });
 }
 
 export function updateBooking(
@@ -131,6 +161,8 @@ export function createReport(input: {
   booking_id: string;
   summary: string;
   checklist: ChecklistItem[];
+  closing_checklist: ChecklistItem[];
+  supply_alerts: { item: string; status: 'low' | 'out' }[];
   before_photos: string[];
   after_photos: string[];
 }) {

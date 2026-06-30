@@ -86,6 +86,13 @@ create table if not exists public.bookings (
   address             text not null,
   city                text not null,
   postal_code         text,
+  buzz_code           text,
+
+  -- who provides cleaning supplies (false = client / $25hr, true = us / $40hr)
+  company_supplies    boolean not null default false,
+
+  -- short human-friendly code the client uses (with their email) to look up bookings
+  reference_code      text,
 
   -- schedule
   preferred_date      date,
@@ -112,6 +119,35 @@ create index if not exists bookings_status_idx          on public.bookings (stat
 create index if not exists bookings_cleaner_idx          on public.bookings (assigned_cleaner_id);
 create index if not exists bookings_created_at_idx       on public.bookings (created_at desc);
 create index if not exists bookings_series_idx           on public.bookings (series_id);
+create unique index if not exists bookings_reference_code_idx on public.bookings (reference_code);
+create index if not exists bookings_client_email_idx     on public.bookings (lower(client_email));
+
+-- Generate a short, human-friendly reference code (e.g. CT-7F3K9Q) on insert.
+create or replace function public.set_reference_code()
+returns trigger language plpgsql as $$
+declare
+  code  text;
+  chars text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; -- no 0/O/1/I
+  i     int;
+begin
+  if new.reference_code is null then
+    loop
+      code := 'CT-';
+      for i in 1..6 loop
+        code := code || substr(chars, 1 + floor(random() * length(chars))::int, 1);
+      end loop;
+      exit when not exists (select 1 from public.bookings where reference_code = code);
+    end loop;
+    new.reference_code := code;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists bookings_set_reference_code on public.bookings;
+create trigger bookings_set_reference_code
+  before insert on public.bookings
+  for each row execute function public.set_reference_code();
 
 -- A brand-new booking starts its own series (series_id = its own id). Auto-created
 -- repeat visits inherit the parent's series_id (set explicitly on insert).
@@ -167,6 +203,8 @@ create table if not exists public.reports (
   cleaner_id    uuid references public.profiles (id) on delete set null,
   summary       text not null,
   checklist     jsonb not null default '[]'::jsonb,
+  closing_checklist jsonb not null default '[]'::jsonb,
+  supply_alerts jsonb not null default '[]'::jsonb,
   before_photos jsonb not null default '[]'::jsonb,
   after_photos  jsonb not null default '[]'::jsonb,
   completed_at  timestamptz not null default now(),

@@ -14,7 +14,7 @@ import { JobUpdatesFeed } from '../../components/booking/JobUpdatesFeed';
 import { ReportView } from '../../components/booking/ReportView';
 import { SeriesTimeline } from '../../components/booking/SeriesTimeline';
 import { getBookingById, listCleaners, updateBooking } from '../../lib/api';
-import { STATUS_LABELS } from '../../lib/constants';
+import { STATUS_LABELS, hourlyRate } from '../../lib/constants';
 import type { BookingStatus } from '../../lib/types';
 
 const ASSIGNABLE_STATUSES: BookingStatus[] = [
@@ -29,6 +29,8 @@ export function AdminBookingDetail() {
   const { id = '' } = useParams();
   const queryClient = useQueryClient();
   const [price, setPrice] = useState('');
+  const [hours, setHours] = useState('');
+  const [crew, setCrew] = useState('1');
   const [savedFlash, setSavedFlash] = useState(false);
 
   const bookingQuery = useQuery({
@@ -207,7 +209,52 @@ export function AdminBookingDetail() {
                 </Select>
               </Field>
 
-              <Field label="Quote (USD)" htmlFor="price">
+              {/* Price calculator: hours × cleaners × rate */}
+              <div className="rounded-lg bg-slate-50 p-3">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  Price helper · ${hourlyRate(Boolean(booking.company_supplies))}/hr per cleaner
+                  {booking.company_supplies ? ' (we supply)' : ''}
+                </p>
+                <div className="flex items-end gap-2">
+                  <Field label="Hours" htmlFor="hours" className="flex-1">
+                    <Input
+                      id="hours"
+                      type="number"
+                      min="0"
+                      step="0.5"
+                      placeholder="0"
+                      value={hours}
+                      onChange={(e) => setHours(e.target.value)}
+                    />
+                  </Field>
+                  <Field label="Cleaners" htmlFor="crew" className="flex-1">
+                    <Input
+                      id="crew"
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={crew}
+                      onChange={(e) => setCrew(e.target.value)}
+                    />
+                  </Field>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={() => {
+                      const rate = hourlyRate(Boolean(booking.company_supplies));
+                      const computed = Number(hours || 0) * Number(crew || 0) * rate;
+                      setPrice(computed ? String(computed) : '');
+                    }}
+                  >
+                    = ${' '}
+                    {Number(hours || 0) *
+                      Number(crew || 0) *
+                      hourlyRate(Boolean(booking.company_supplies)) || 0}
+                  </Button>
+                </div>
+              </div>
+
+              <Field label="Price (USD)" htmlFor="price">
                 <div className="flex gap-2">
                   <Input
                     id="price"

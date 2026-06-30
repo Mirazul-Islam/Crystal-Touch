@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button';
 
 interface ThankYouState {
   token?: string;
+  reference_code?: string;
   name?: string;
 }
 
@@ -42,12 +43,26 @@ export function ThankYou() {
             Thanks{state.name ? `, ${state.name}` : ''} — your request is in!
           </h1>
           <p className="mt-3 text-slate-600">
-            Our team will review your details and confirm your quote shortly by email or
+            Our team will review your details and confirm your booking shortly by email or
             phone. Save the link below to track your booking and view your after-service
             report.
           </p>
 
-          <Card className="mt-8 text-left">
+          {state.reference_code && (
+            <Card className="mt-8 text-left">
+              <CardBody className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-medium text-slate-700">Your booking reference</p>
+                  <p className="text-xs text-slate-500">Keep this for your records.</p>
+                </div>
+                <span className="rounded-lg bg-brand-50 px-3 py-1.5 text-lg font-bold tracking-wide text-brand-700">
+                  {state.reference_code}
+                </span>
+              </CardBody>
+            </Card>
+          )}
+
+          <Card className="mt-4 text-left">
             <CardBody>
               <p className="text-sm font-medium text-slate-700">Your private tracking link</p>
               <div className="mt-2 flex items-center gap-2">

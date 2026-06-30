@@ -93,3 +93,64 @@ export const PIPELINE: BookingStatus[] = [
   'in_progress',
   'completed',
 ];
+
+// Company details used on invoices.
+export const COMPANY = {
+  name: 'Crystal Touch Cleaning',
+  addressLines: ['169 Regency Park Drive, Unit 305', 'Halifax, Nova Scotia', 'B3S 1P4'],
+  phone: '(902) 789-7777',
+};
+
+// Hourly rate per cleaner, depending on who supplies the cleaning materials.
+export const RATE_CLIENT_SUPPLIES = 25; // client provides supplies
+export const RATE_COMPANY_SUPPLIES = 40; // we bring supplies
+
+export function hourlyRate(companySupplies: boolean): number {
+  return companySupplies ? RATE_COMPANY_SUPPLIES : RATE_CLIENT_SUPPLIES;
+}
+
+// Security/closing checklist the cleaner ticks before leaving.
+export const DEFAULT_CLOSING_CHECKLIST: string[] = [
+  'All windows closed',
+  'Front door locked',
+  'Back door locked',
+  'Garage door closed',
+  'Lights turned off',
+  'Heating / AC set',
+  'Keys returned / lockbox secured',
+];
+
+// Restock items a cleaner can flag for Airbnb hosts.
+export const AIRBNB_SUPPLY_ITEMS: string[] = [
+  'Coffee',
+  'Tea',
+  'Sugar',
+  'Toilet paper',
+  'Paper towels',
+  'Dish soap',
+  'Hand soap',
+  'Shampoo',
+  'Cleaning supplies',
+  'Trash bags',
+];
+
+export function isAirbnb(serviceType: ServiceType): boolean {
+  return serviceType === 'airbnb' || serviceType === 'airbnb_express';
+}
+
+export const SUPPLIES_OPTIONS: {
+  value: boolean;
+  label: string;
+  blurb: string;
+}[] = [
+  {
+    value: false,
+    label: 'I’ll provide supplies',
+    blurb: `$${RATE_CLIENT_SUPPLIES}/hr per cleaner`,
+  },
+  {
+    value: true,
+    label: 'Bring supplies',
+    blurb: `$${RATE_COMPANY_SUPPLIES}/hr per cleaner`,
+  },
+];
