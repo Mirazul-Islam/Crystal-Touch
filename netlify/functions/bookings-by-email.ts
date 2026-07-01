@@ -30,7 +30,7 @@ export const handler: Handler = async (event) => {
     let query = supabase
       .from('bookings')
       .select(
-        'id, reference_code, client_name, client_email, client_phone, service_type, frequency, status, company_supplies, address, city, postal_code, preferred_date, estimated_price, visit_number, created_at',
+        'id, reference_code, client_name, client_email, client_phone, service_type, frequency, status, company_supplies, address, city, postal_code, preferred_date, estimated_price, extra_cost, extra_cost_note, tax_rate, visit_number, created_at',
       )
       .ilike('client_email', email)
       .order('created_at', { ascending: false });

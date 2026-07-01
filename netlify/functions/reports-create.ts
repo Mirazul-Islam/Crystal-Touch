@@ -14,7 +14,7 @@ import {
 } from './_shared/http';
 
 const COPY_COLUMNS =
-  'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number';
+  'id, public_token, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, tax_rate, series_id, visit_number';
 
 /** Compute the next visit date (YYYY-MM-DD) from today for a recurring booking. */
 function nextDate(frequency: string): string {
@@ -121,6 +121,7 @@ export const handler: Handler = async (event) => {
             preferred_time: booking.preferred_time,
             notes: booking.notes,
             estimated_price: booking.estimated_price,
+            tax_rate: booking.tax_rate,
             assigned_cleaner_id: booking.assigned_cleaner_id,
             status: booking.assigned_cleaner_id ? 'assigned' : 'new',
             series_id: booking.series_id,

@@ -3,6 +3,7 @@ import { formatDate, formatPrice } from '../../lib/format';
 
 export interface InvoiceLine {
   date: string | null;
+  label?: string | null; // set for extra-cost lines (e.g. "Uber")
   amount: number;
 }
 
@@ -11,8 +12,12 @@ interface InvoiceProps {
   issuedAt: string;
   clientName: string | null;
   clientAddress: string | null;
+  clientPhone?: string | null;
   periodLabel: string;
   lines: InvoiceLine[];
+  subtotal: number;
+  taxLabel?: string | null;
+  taxAmount: number;
   total: number;
 }
 
@@ -25,8 +30,12 @@ export function Invoice({
   issuedAt,
   clientName,
   clientAddress,
+  clientPhone,
   periodLabel,
   lines,
+  subtotal,
+  taxLabel,
+  taxAmount,
   total,
 }: InvoiceProps) {
   return (
@@ -63,6 +72,7 @@ export function Invoice({
           </p>
           <p className="font-semibold text-slate-900">{clientName || '—'}</p>
           {clientAddress && <p>{clientAddress}</p>}
+          {clientPhone && <p>Phone: {clientPhone}</p>}
           <p className="mt-2 text-slate-500">Billing period: {periodLabel}</p>
         </div>
       </div>
@@ -85,10 +95,26 @@ export function Invoice({
           )}
           {lines.map((line, i) => (
             <tr key={i} className="border-b border-slate-200">
-              <td className="px-4 py-2.5">{line.date ? formatDate(line.date) : '—'}</td>
+              <td className="px-4 py-2.5">
+                {line.date ? formatDate(line.date) : '—'}
+                {line.label ? (
+                  <span className="text-slate-500"> — {line.label}</span>
+                ) : null}
+              </td>
               <td className="px-4 py-2.5 text-right">{formatPrice(line.amount)}</td>
             </tr>
           ))}
+
+          <tr>
+            <td className="px-4 py-2 text-right text-slate-500">Subtotal</td>
+            <td className="px-4 py-2 text-right">{formatPrice(subtotal)}</td>
+          </tr>
+          {taxAmount > 0 && (
+            <tr>
+              <td className="px-4 py-2 text-right text-slate-500">{taxLabel || 'Tax'}</td>
+              <td className="px-4 py-2 text-right">{formatPrice(taxAmount)}</td>
+            </tr>
+          )}
           <tr className="border-t-2 border-brand-700 bg-slate-50">
             <td className="px-4 py-3 text-right font-bold uppercase">Total</td>
             <td className="px-4 py-3 text-right text-base font-bold text-brand-800">

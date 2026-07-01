@@ -135,6 +135,9 @@ export function updateBooking(
     status?: BookingStatus;
     assigned_cleaner_id?: string | null;
     estimated_price?: number | null;
+    extra_cost?: number | null;
+    extra_cost_note?: string | null;
+    tax_rate?: number;
   },
 ) {
   return request<{ id: string }>('bookings-update', {

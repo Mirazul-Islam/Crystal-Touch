@@ -61,7 +61,21 @@ export function AdminClientDetail() {
   );
 
   const completed = filtered.filter((b) => b.status === 'completed');
-  const total = completed.reduce((s, b) => s + Number(b.estimated_price ?? 0), 0);
+
+  // Money: cleaning subtotal + extra costs (untaxed) + tax on cleaning.
+  const cleaningTotal = completed.reduce(
+    (s, b) => s + Number(b.estimated_price ?? 0),
+    0,
+  );
+  const extrasTotal = completed.reduce((s, b) => s + Number(b.extra_cost ?? 0), 0);
+  const taxAmount = completed.reduce(
+    (s, b) => s + Number(b.estimated_price ?? 0) * Number(b.tax_rate ?? 0),
+    0,
+  );
+  const subtotal = cleaningTotal + extrasTotal;
+  const total = subtotal + taxAmount;
+  const taxRate = completed.find((b) => Number(b.tax_rate ?? 0) > 0)?.tax_rate ?? 0;
+  const taxLabel = taxAmount > 0 ? `HST (${Math.round(Number(taxRate) * 100)}%)` : null;
 
   // grouped work list (most recent first)
   const groups = useMemo(() => {
@@ -83,7 +97,19 @@ export function AdminClientDetail() {
   const invoiceLines: InvoiceLine[] = completed
     .slice()
     .sort((a, b) => (serviceDate(a) < serviceDate(b) ? -1 : 1))
-    .map((b) => ({ date: serviceDate(b), amount: Number(b.estimated_price ?? 0) }));
+    .flatMap((b) => {
+      const rows: InvoiceLine[] = [
+        { date: serviceDate(b), amount: Number(b.estimated_price ?? 0) },
+      ];
+      if (Number(b.extra_cost ?? 0) > 0) {
+        rows.push({
+          date: serviceDate(b),
+          label: b.extra_cost_note || 'Extra',
+          amount: Number(b.extra_cost),
+        });
+      }
+      return rows;
+    });
 
   const client = data?.client;
   const sample = all[0];
@@ -254,8 +280,12 @@ export function AdminClientDetail() {
           issuedAt={new Date().toISOString().slice(0, 10)}
           clientName={client?.name ?? clientEmail}
           clientAddress={clientAddress}
+          clientPhone={client?.phone}
           periodLabel={periodLabel}
           lines={invoiceLines}
+          subtotal={subtotal}
+          taxLabel={taxLabel}
+          taxAmount={taxAmount}
           total={total}
         />
       </Card>

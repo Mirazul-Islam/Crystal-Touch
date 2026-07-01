@@ -12,7 +12,7 @@ import {
 } from './_shared/http';
 
 const BOOKING_COLUMNS =
-  'id, public_token, reference_code, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, series_id, visit_number, recurrence_parent_id, created_at, updated_at';
+  'id, public_token, reference_code, client_name, client_email, client_phone, service_type, frequency, bedrooms, bathrooms, extras, address, city, postal_code, buzz_code, company_supplies, preferred_date, preferred_time, notes, status, assigned_cleaner_id, estimated_price, extra_cost, extra_cost_note, tax_rate, series_id, visit_number, recurrence_parent_id, created_at, updated_at';
 
 /**
  * Returns a single booking with its job updates, final report, and — for

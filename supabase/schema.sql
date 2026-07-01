@@ -104,6 +104,9 @@ create table if not exists public.bookings (
   status              public.booking_status not null default 'new',
   assigned_cleaner_id uuid references public.profiles (id) on delete set null,
   estimated_price     numeric(10, 2),
+  extra_cost          numeric(10, 2),
+  extra_cost_note     text,
+  tax_rate            numeric(5, 4) not null default 0,
 
   -- recurring series: a weekly/monthly client is a chain of bookings (visits)
   -- that all share a series_id. The first booking is the root (series_id = id).
