@@ -1,6 +1,10 @@
 export function formatDate(value: string | null | undefined): string {
   if (!value) return '—';
-  const d = new Date(value);
+  // A plain YYYY-MM-DD (a `date` column) must be parsed as LOCAL midnight —
+  // otherwise it's read as UTC and shows the previous day west of UTC.
+  const d = /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ? new Date(`${value}T00:00:00`)
+    : new Date(value);
   if (Number.isNaN(d.getTime())) return '—';
   return d.toLocaleDateString(undefined, {
     year: 'numeric',
