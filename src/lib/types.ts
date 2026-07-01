@@ -43,6 +43,9 @@ export interface Booking {
   assigned_cleaner_id: string | null;
   assigned_cleaner_name?: string | null;
   estimated_price: number | null;
+  extra_cost?: number | null;
+  extra_cost_note?: string | null;
+  tax_rate?: number | null;
   series_id?: string | null;
   visit_number?: number;
   recurrence_parent_id?: string | null;

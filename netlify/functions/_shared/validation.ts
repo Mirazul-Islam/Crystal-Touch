@@ -43,6 +43,9 @@ export const bookingUpdateSchema = z
     status: z.enum(BOOKING_STATUSES).optional(),
     assigned_cleaner_id: z.string().uuid().nullable().optional(),
     estimated_price: z.number().min(0).max(1_000_000).nullable().optional(),
+    extra_cost: z.number().min(0).max(1_000_000).nullable().optional(),
+    extra_cost_note: z.string().trim().max(200).nullable().optional(),
+    tax_rate: z.number().min(0).max(1).optional(),
   })
   .refine((v) => Object.keys(v).length > 0, { message: 'No fields to update' });
 

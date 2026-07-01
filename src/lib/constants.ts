@@ -101,6 +101,9 @@ export const COMPANY = {
   phone: '(902) 789-7777',
 };
 
+// Tax applied when a booking is marked taxable (e.g. Nova Scotia HST).
+export const HST_RATE = 0.15;
+
 // Hourly rate per cleaner, depending on who supplies the cleaning materials.
 export const RATE_CLIENT_SUPPLIES = 25; // client provides supplies
 export const RATE_COMPANY_SUPPLIES = 40; // we bring supplies

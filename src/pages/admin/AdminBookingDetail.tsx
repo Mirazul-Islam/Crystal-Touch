@@ -14,7 +14,7 @@ import { JobUpdatesFeed } from '../../components/booking/JobUpdatesFeed';
 import { ReportView } from '../../components/booking/ReportView';
 import { SeriesTimeline } from '../../components/booking/SeriesTimeline';
 import { getBookingById, listCleaners, updateBooking } from '../../lib/api';
-import { STATUS_LABELS, hourlyRate } from '../../lib/constants';
+import { STATUS_LABELS, hourlyRate, HST_RATE } from '../../lib/constants';
 import type { BookingStatus } from '../../lib/types';
 
 const ASSIGNABLE_STATUSES: BookingStatus[] = [
@@ -31,6 +31,8 @@ export function AdminBookingDetail() {
   const [price, setPrice] = useState('');
   const [hours, setHours] = useState('');
   const [crew, setCrew] = useState('1');
+  const [extraCost, setExtraCost] = useState('');
+  const [extraNote, setExtraNote] = useState('');
   const [savedFlash, setSavedFlash] = useState(false);
 
   const bookingQuery = useQuery({
@@ -49,6 +51,10 @@ export function AdminBookingDetail() {
   useEffect(() => {
     if (booking?.estimated_price != null) setPrice(String(booking.estimated_price));
   }, [booking?.estimated_price]);
+  useEffect(() => {
+    setExtraCost(booking?.extra_cost != null ? String(booking.extra_cost) : '');
+    setExtraNote(booking?.extra_cost_note ?? '');
+  }, [booking?.extra_cost, booking?.extra_cost_note]);
 
   const mutation = useMutation({
     mutationFn: (patch: Parameters<typeof updateBooking>[1]) =>
@@ -278,6 +284,52 @@ export function AdminBookingDetail() {
                   </Button>
                 </div>
               </Field>
+
+              {/* Extra cost (e.g. Uber) — billed on top, not taxed */}
+              <Field label="Extra cost (e.g. Uber)" htmlFor="extra_cost">
+                <div className="flex gap-2">
+                  <Input
+                    id="extra_cost"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    className="w-28"
+                    value={extraCost}
+                    onChange={(e) => setExtraCost(e.target.value)}
+                  />
+                  <Input
+                    placeholder="Label (e.g. Uber)"
+                    value={extraNote}
+                    onChange={(e) => setExtraNote(e.target.value)}
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      mutation.mutate({
+                        extra_cost: extraCost === '' ? null : Number(extraCost),
+                        extra_cost_note: extraNote.trim() || null,
+                      })
+                    }
+                    loading={mutation.isPending}
+                  >
+                    <Save className="h-4 w-4" />
+                  </Button>
+                </div>
+              </Field>
+
+              {/* Tax */}
+              <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-slate-300 text-brand-600"
+                  checked={(booking.tax_rate ?? 0) > 0}
+                  onChange={(e) =>
+                    mutation.mutate({ tax_rate: e.target.checked ? HST_RATE : 0 })
+                  }
+                />
+                Taxable — apply HST ({Math.round(HST_RATE * 100)}%)
+              </label>
 
               {savedFlash && (
                 <p className="text-sm font-medium text-emerald-600">Saved ✓</p>
