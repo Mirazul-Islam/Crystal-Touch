@@ -90,9 +90,15 @@ export function AdminClientDetail() {
       .map(([key, v]) => ({ key, ...v }));
   }, [filtered, groupBy]);
 
-  const periodLabel = custom
-    ? `${from ? formatDate(from) : 'start'} – ${to ? formatDate(to) : 'today'}`
-    : RANGE_LABELS[preset];
+  // Always show concrete start – end dates on the invoice. For "all time" (no
+  // explicit range) fall back to the first/last actual booking date.
+  const datesInRange = filtered.map(serviceDate).sort();
+  const periodFrom = range.from || datesInRange[0] || '';
+  const periodTo = range.to || datesInRange[datesInRange.length - 1] || '';
+  const periodLabel =
+    periodFrom || periodTo
+      ? `${periodFrom ? formatDate(periodFrom) : '…'} – ${periodTo ? formatDate(periodTo) : '…'}`
+      : 'All time';
 
   const invoiceLines: InvoiceLine[] = completed
     .slice()
