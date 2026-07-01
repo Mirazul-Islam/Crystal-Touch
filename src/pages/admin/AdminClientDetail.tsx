@@ -280,6 +280,7 @@ export function AdminClientDetail() {
           issuedAt={new Date().toISOString().slice(0, 10)}
           clientName={client?.name ?? clientEmail}
           clientAddress={clientAddress}
+          clientEmail={client?.email ?? clientEmail}
           clientPhone={client?.phone}
           periodLabel={periodLabel}
           lines={invoiceLines}

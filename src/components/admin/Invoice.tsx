@@ -12,6 +12,7 @@ interface InvoiceProps {
   issuedAt: string;
   clientName: string | null;
   clientAddress: string | null;
+  clientEmail?: string | null;
   clientPhone?: string | null;
   periodLabel: string;
   lines: InvoiceLine[];
@@ -30,6 +31,7 @@ export function Invoice({
   issuedAt,
   clientName,
   clientAddress,
+  clientEmail,
   clientPhone,
   periodLabel,
   lines,
@@ -72,6 +74,7 @@ export function Invoice({
           </p>
           <p className="font-semibold text-slate-900">{clientName || '—'}</p>
           {clientAddress && <p>{clientAddress}</p>}
+          {clientEmail && <p>{clientEmail}</p>}
           {clientPhone && <p>Phone: {clientPhone}</p>}
           <p className="mt-2 text-slate-500">Billing period: {periodLabel}</p>
         </div>
